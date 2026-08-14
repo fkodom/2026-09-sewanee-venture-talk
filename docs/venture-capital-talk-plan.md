@@ -1,9 +1,10 @@
-# How Nine Failures Make a Fund
+# The Math of Venture Capital
 
 ## A working plan for a public talk on the mathematics of venture capital
 
 ### Possible titles
 
+- **The Math of Venture Capital**
 - **How Nine Failures Make a Fund**  
   *Power laws, expected value, and the mathematics of venture capital*
 - **Most Startups Fail. Why Invest?**
@@ -35,7 +36,7 @@ That mathematical framework helps explain:
 
 > **Paradox → mathematical model → empirical evidence → implications for investors → application to building companies → personal conclusion**
 
-The talk should lead with the mathematical question. The personal background comes later, after establishing the framework, as evidence for why the speaker can discuss both investing in startups and building them.
+The title is followed by a brief speaker background that establishes the Sewanee connection and technical path. Move immediately from that introduction to the mathematical question; save the broader investor-and-builder framework for later, after the model and evidence.
 
 ## Timing overview
 
@@ -46,7 +47,7 @@ The talk should lead with the mathematical question. The personal background com
 | Venture evidence | 9–10 minutes | Argue that venture outcomes resemble the power-law model |
 | Background and implications | 8–9 minutes | Establish perspective and derive investment consequences |
 | Startup discovery exercise | 10–12 minutes | Apply the framework to a possible real problem |
-| Valuation and conclusion | 4–5 minutes | Explain incentive alignment and return to the human lesson |
+| Valuation and conclusion | 5–6 minutes | Derive a pre-product valuation and return to the human lesson |
 
 ---
 
@@ -54,13 +55,50 @@ The talk should lead with the mathematical question. The personal background com
 
 ## Part I: The paradox and mathematical foundation
 
-### Slide 1 — Most startups fail.
+### Slide 1 — The Math of Venture Capital
+
+#### On the slide
+
+> # The Math of Venture Capital
+
+> **How 9 Wrongs Make a Right**
+
+---
+
+### Slide 2 — My background
+
+#### On the slide
+
+> # My background
+
+Education:
+
+- **2015 · Sewanee** — Mathematics + Physics
+- **2017 · UC Davis** — M.S. Physics
+
+Since then:
+
+- Machine Learning Engineer
+- Senior Computer Vision Engineer
+- Director of Innovation
+- Director of ML
+- **Founding Engineer @ Tower Research Ventures**
+
+#### Purpose
+
+Establish the speaker's connection to Sewanee and the path from physics into machine learning and startup building. Keep this introduction brief, then open the central question.
+
+---
+
+### Slide 3 — Most startups fail.
 
 #### On the slide
 
 > # Most startups fail.
+>
+> Why venture capital?
 
-Nothing else. No subtitle, chart, or qualification.
+Use off-white for the statement and red for the question.
 
 #### Purpose
 
@@ -78,35 +116,31 @@ Pause before advancing. Do not answer the question yet.
 
 ---
 
-### Slide 2 — The S&P 500 already sets a high bar
+### Slide 4 — The S&P 500
 
 #### On the slide
 
-```text
-Broad S&P 500 index fund
-$1 → approximately $2 in eight years
-2^(1/8) - 1 ≈ 9.1% annualized
-```
+A line chart of the annual average S&P 500 price from 1927 through 2026. Use a logarithmic vertical scale so equal proportional changes occupy equal vertical distances.
 
-Add a short qualification: this is an average and a rule of thumb, not a promise.
+Label the chart as a price-index history. Dividends are excluded, and the 2026 value is year-to-date.
 
 #### Purpose
 
-Establish the public-market alternative before asking anyone to accept venture risk.
+Show the long compounding trend in the public-market alternative before asking anyone to accept venture risk.
 
 #### Spoken explanation
 
 > Before investing in startups, I can buy a broad S&P 500 index fund.
 >
-> As a long-run rule of thumb, assume about 9% per year. That roughly doubles the investment every eight years.
+> This is the average S&P 500 price for each year over the last century. The vertical scale is logarithmic, so a straight long-run slope represents compounding.
 >
-> That is an average, not a forecast. Some eight-year periods will be much better or much worse. But it gives us the benchmark venture has to beat.
+> This is the price index, not total investor return. It excludes dividends. The point is the persistent compounding trend and the public-market alternative it creates.
 
-Use Investor.gov's Rule of 72 example at 9% as the source for the eight-year teaching assumption. Do not present it as the realized return of every S&P 500 period.
+Use the annual average price series supplied from Macrotrends. Keep the explicit 2× and 3× performance comparison on the next slide.
 
 ---
 
-### Slide 3 — Venture has to clear a higher bar
+### Slide 5 — Venture must outperform
 
 #### On the slide
 
@@ -115,10 +149,6 @@ S&P 500 rule of thumb      Venture fund hurdle
 2× in about 8 years        at least 3× in about 8 years
 9.1% annualized            at least 14.7% annualized
 ```
-
-Then state:
-
-> If nine of ten can fail, the winners must more than make up the difference.
 
 #### Purpose
 
@@ -132,7 +162,7 @@ Turn the opening paradox into a performance hurdle without relying on a hypothet
 >
 > For this talk, the venture hurdle is at least three times the invested capital over roughly eight years. That is about 14.7% annualized.
 >
-> The winners therefore have to do more than cover the losses. They have to push the whole fund past the public-market alternative.
+> The portfolio still has to clear the public-market alternative despite the high failure rate.
 
 Treat 3× over eight years as the talk's explicit working benchmark, not an industry-wide promise. Compare returns on the same basis. If the index result is an investor return, the venture result should be net to the investor; gross portfolio performance must be higher before fees and carry.
 
@@ -140,7 +170,7 @@ Leave the mathematical mechanism unanswered and move directly into the coin game
 
 ---
 
-### Slide 4 — Three coin-flipping games
+### Slide 6 — Three coin games
 
 #### On the slide
 
@@ -156,14 +186,14 @@ Signal that three superficially similar random processes produce fundamentally d
 
 ---
 
-### Slide 5 — Game 1: Additive outcomes
+### Slide 7 — Game 1: additive
 
 #### Rules
 
 Flip a fair coin 100 times:
 
 - Heads: gain $1
-- Tails: lose $1
+- Tails: gain $0
 
 #### Mathematics
 
@@ -171,19 +201,21 @@ Flip a fair coin 100 times:
 X=\sum_{i=1}^{100}Y_i
 \]
 
-The expected value is zero. Across many players, the distribution is approximately normal.
+where (Y_i\in\{0,1\}). The expected value is $50. Across many players, the distribution is approximately normal.
 
 #### Core intuition
 
-Additive processes cluster around an average. Very large positive and negative deviations are both possible, but increasingly rare and roughly symmetric.
+Additive processes cluster around an average. Outcomes far above or below $50 are possible but increasingly rare.
 
 #### Visual
 
-A normal bell curve centered at zero.
+Use the original Game 1 decision tree and 10,000-trial normal simulation from [On Power Laws](https://fkodom.com/blog/on-power-laws).
+
+Keep the setup slide to the title, coin rules, and tightly cropped tree. Put the simulation on a separate result slide at the largest practical size. The equations and interpretation are spoken, not repeated beside the figures.
 
 ---
 
-### Slide 6 — Game 2: Multiplicative outcomes
+### Slide 8 — Game 2: multiplicative
 
 #### Rules
 
@@ -214,11 +246,11 @@ Because multiplication becomes addition after taking a logarithm, the distributi
 
 #### Visual
 
-A log-normal distribution beside the Game 1 bell curve.
+Use the original decision tree on the setup slide and the log-normal simulation on a separate result slide. Keep both figures large. Do not add expected-value cards or a second column of explanatory text.
 
 ---
 
-### Slide 7 — Game 3: Multiplication with elimination
+### Slide 9 — Game 3: elimination
 
 #### Rules
 
@@ -242,51 +274,15 @@ Summed over indefinitely many possible levels, the idealized expected value dive
 
 The purpose is not to claim that real markets contain infinite money or that a rational person would pay an infinite entry price. Real investors have limited wealth, limited time, risk preferences, and finite possible outcomes. The useful feature of the model is its tail: extremely rare outcomes remain economically significant.
 
+Keep this qualification in the spoken explanation or speaker notes. Do not place it beneath the tree as a caption.
+
 #### Visual
 
-A decision tree showing repeated doubling and elimination, followed by a heavy-tailed outcome plot.
+A tightly cropped decision tree showing repeated doubling and elimination, followed by the original heavy-tailed outcome plot on a separate slide. Do not place a tail equation or explanatory sidebar beside the plot.
 
 ---
 
-### Slide 8 — Deriving the power law
-
-This slide provides additional mathematical substance for the department audience while remaining interpretable to the general public.
-
-Suppose:
-
-- The probability of surviving a round is \(s\)
-- The value multiplier after surviving is \(m\)
-
-After \(n\) rounds:
-
-\[
-x=m^n, \qquad P(X\ge x)=s^n
-\]
-
-Since \(n=\log_m x\):
-
-\[
-P(X\ge x)
-=s^{\log_m x}
-=x^{\log_m s}
-=x^{-\alpha},
-\qquad
-\alpha=-\frac{\ln s}{\ln m}
-\]
-
-#### Core intuition
-
-Repeated elimination combined with multiplicative growth naturally creates a power-law tail. When the value multiplier is approximately the inverse of the survival probability, \(\alpha\) is near one.
-
-#### Presentation note
-
-Explain the verbal idea before showing the derivation:
-
-> Every successive level is less likely to be reached, but every surviving outcome is proportionally more valuable.
-
----
-
-### Slide 9 — Three different worlds
+### Slide 10 — Three worlds
 
 #### On the slide
 
@@ -308,7 +304,31 @@ If helpful, show the power law as a straight line on a log-log plot.
 
 ## Part II: Does venture capital actually behave this way?
 
-### Slide 10 — The venture-capital coin flip
+### Slide 11 — What's in a venture investment?
+
+Use a dark transition slide with only the question:
+
+> What's in a venture investment?
+
+Pause before moving from the portfolio model to the mechanics of a single financing.
+
+---
+
+### Slide 12 — Capital for equity
+
+A venture investment is an exchange of capital for equity in the company. Show the basic ownership relationship:
+
+\[
+\text{post-money valuation}
+=
+\frac{\text{investment}}{\text{ownership acquired}}
+\]
+
+Keep the slide spare. Explain dilution, pre-money valuation, and examples verbally if useful.
+
+---
+
+### Slide 13 — Advance or stop
 
 #### Mapping
 
@@ -326,7 +346,40 @@ Companies are not literal random coin flips. Founders have agency, investors lea
 
 ---
 
-### Slide 11 — The funding ladder
+### Slide 14 — A round buys time
+
+A financing round is typically sized to carry the company to the evidence required for its next fundraise.
+
+Use these rules of thumb:
+
+- Primary rounds are often roughly two years apart.
+- A round commonly sells approximately 10–25% of the company, depending on stage, valuation, capital needs, and negotiating leverage.
+- The capital should fund the milestones required to reach the next round.
+
+Use Carta's fundraising-cadence and dilution data as the visible source. Treat the ranges as planning heuristics, not fixed terms.
+
+---
+
+### Slide 15 — A round buys information
+
+Each financing round buys growth, but it also buys information.
+
+| Stage | Evidence available |
+| --- | --- |
+| Pre-seed | Founders, insight, market structure, rough prototype |
+| Seed | Early product usage, partner customers, initial revenue |
+| Series A | Retention, repeatable acquisition, revenue growth |
+| Later stages | Scaling efficiency, market leadership, durability |
+
+At the earliest stage, qualitative priors dominate because meaningful quantitative evidence cannot yet exist. As the company develops, investors update their beliefs using product, customer, revenue, and market evidence.
+
+#### Useful framing
+
+> A funding round is a priced experiment designed to reach the next information milestone.
+
+---
+
+### Slide 16 — Funding ladder
 
 Show an approximate progression:
 
@@ -339,7 +392,7 @@ For each transition, show:
 - Approximate graduation probability
 - Approximate valuation at the next stage
 
-The current working figures and sources are in the article [On Power Laws](https://fkodom.com/blog/on-power-laws):
+The figures and sources are in the article [On Power Laws](https://fkodom.com/blog/on-power-laws):
 
 | Transition | Approximate graduation rate | Approximate next-stage valuation |
 | --- | ---: | ---: |
@@ -355,13 +408,13 @@ The seed-to-Series-A transition has historically been an especially narrow bottl
 
 #### Source note
 
-Refresh the precise figures shortly before the talk. Round sizes and graduation rates vary with market conditions, dataset definitions, cohort age, and measurement window.
+The article cites the PitchBook–NVCA Venture Monitor and CB Insights State of Venture for round sizes and valuations, and Carta's State of Private Markets for graduation rates. Round sizes and graduation rates vary with market conditions, dataset definitions, cohort age, and measurement window.
 
 ---
 
-### Slide 12 — The empirical distribution of returns
+### Slide 17 — Power laws
 
-Use several observations to show that venture outcomes are actually concentrated:
+Use two large, readable bullets to show that venture outcomes are actually concentrated:
 
 - In Paul Graham's 2012 analysis of Y Combinator, Airbnb and Dropbox represented roughly three-quarters of the portfolio's value.
 - Horsley Bridge found that approximately 5% of capital deployed from 1985–2014 generated half of all returns.
@@ -369,80 +422,49 @@ Use several observations to show that venture outcomes are actually concentrated
 
 #### Visual
 
-A portfolio bar chart in which many companies contribute little or nothing and one or two companies dominate the total.
+Model the chart after the ranked-return graphic in *Zero to One*. Order illustrative company returns from largest to smallest, with the biggest returner at the left. Use bars for the steep actual distribution and a dashed, flatter line for the distribution people often imagine. Label both directly.
+
+Add a dotted line labeled “the fund” just below the second-largest bar. This is an illustrative scale marker, not an observed portfolio statistic, and replaces the standalone “Return the fund?” slide.
 
 #### Main point
 
-The average company is not a useful picture of the portfolio. A tiny number of observations can determine the result.
+The average company is not a useful picture of the portfolio. The actual ranked distribution is much steeper than the perceived distribution, and a tiny number of companies can determine the result.
 
 ---
 
-### Slide 13 — Every company must be capable of returning the fund
+### Slide 18 — Dilution
 
-Peter Thiel's discussion in *Zero to One* is useful as an articulation of the investment consequence, although it is not independent empirical evidence.
+Add an interactive cap-table experiment immediately after the power-law portfolio slide.
 
-#### Main idea
+#### Model
 
-Every investment must at least possess the theoretical potential to return the entire fund. If an investment cannot become large enough to matter to the portfolio, its apparently lower risk does not make it attractive within the venture model.
+- Begin with 100 shares outstanding.
+- In each financing round, issue enough new shares for the latest round to own 20% of the post-money company. That means issuing 25 new shares for every 100 existing shares.
+- Assume 50% of companies survive between rounds, so the individual round sizes grow by 3×: $1M, $3M, $9M, then $27M. Cumulative funding is $1M, $4M, $13M, then $40M.
+- Let the audience step through several rounds and watch the ownership of the first investor fall from 20% to 16%, then 12.8%, when it does not participate.
+- Add a pro-rata toggle. When it is on, earlier investors buy enough of each later round to maintain their ownership; the latest round's 20% pool is then shared between follow-on and new capital.
 
-#### Connection to the opening
+Show five stats: company valuation, cumulative total funding, total invested by the Round 1 investor in the active scenario, equity percent, and equity value. By round four, the original investor has put in $1M without pro rata versus $8.8M with pro rata; equity percent is approximately 10.2% versus 20%.
 
-Return to the venture hurdle. A winning company does not merely need to survive. It needs enough upside to push the fund past the public-market alternative.
+Keep the slide visual. The point is the share issuance and ownership arithmetic; explain pro rata rights, valuations, and SAFEs verbally rather than adding a paragraph to the slide.
 
 ---
 
-### Slide 14 — Does funding create the power law?
+### Slide 19 — A round buys fuel
 
-#### Competing explanations
+Show Josh Kopelman's January 11, 2019 post as the slide's only visible content:
 
-1. Exceptional businesses naturally generate multiplicative growth because of networks, software scalability, brand, market leadership, and other compounding advantages.
-2. Staged venture financing selectively eliminates companies that do not demonstrate multiplicative growth and gives more capital to companies that do.
+[Original post on X](https://x.com/joshk/status/1083755402037219334)
 
-#### Conclusion
+Use the post to explain that venture capital is built for the rare company capable of turning aggressive reinvestment into exceptional scale. Do not add the previous three-card comparison of local services, acquisitions, and venture startups.
 
-> Neither the funding schedule alone nor the startups alone produce the power law. It is the combination of the two.
-
-The companies and the funding system form a feedback loop:
-
-- Investors select for evidence of compounding growth.
-- Capital amplifies the companies that exhibit it.
-- Successful funds attract more capital.
-- Competing investors converge on strategies designed around rare, enormous outcomes.
+Use X's auto-sizing widget with the linked article card hidden. The embed requires a network connection.
 
 ---
 
 ## Part III: Background and consequences of the framework
 
-### Slide 15 — A physicist's route into venture capital
-
-#### Visual timeline
-
-```text
-Sewanee math and physics
-        ↓
-UC Davis physics
-        ↓
-Machine learning and computer vision
-        ↓
-Technology startups
-        ↓
-Tower Research Ventures
-```
-
-#### Story to tell
-
-- The exact career path depended on timing, luck, and the 2017 inflection in deep learning.
-- The important early decision was choosing machine learning software over a highly specialized laser-lethality role.
-- That decision preserved optionality and opened a subject that rewarded sustained obsession.
-- Years of startup engineering led to a role that now combines company building and investing.
-
-#### Details to keep brief
-
-The twin boys, move from California, and laser-versus-software decision provide the human story. Exact neural-network architectures and every job transition are better left for speaker notes or questions.
-
----
-
-### Slide 16 — I now sit on both sides
+### Slide 20 — Buy vs. Build
 
 #### Traditional investment work
 
@@ -466,97 +488,31 @@ Establish why the remainder of the talk can move between the investor's and buil
 
 ---
 
-### Slide 17 — Not every good business is a venture business
-
-#### Comparison
-
-| Business or financing model | Typical growth mechanism | Common financing fit |
-| --- | --- | --- |
-| Local service business | Add locations, equipment, and employees | Cash flow and loans |
-| Private-equity acquisition | Buy and improve an operating business | Acquisition capital and debt |
-| Venture startup | Build a product whose value can scale much faster than headcount | Equity capital |
-
-#### Jet-fuel analogy
-
-Venture capital is jet fuel. A motorcycle or car can be an excellent vehicle without being able to use it. The point is not that a venture-backed business is morally or operationally superior. The financing must match the growth mechanics.
-
-The analogy appears to trace to First Round Capital's Josh Kopelman: bad things happen when venture investors push jet fuel on a motorcycle, or when a motorcycle believes it can fly.
-
----
-
-### Slide 18 — Market size follows from fund size
-
-Use ownership and fund size to derive why investors seek enormous markets.
-
-#### Example
-
-Suppose:
-
-- The venture fund is $100 million.
-- The fund retains 10% ownership of a company at exit.
-
-Then:
-
-- A $1 billion exit returns $100 million to the fund.
-- That returns the original fund only once.
-- A single company returning the fund five times would require a roughly $5 billion exit.
-
-#### Main point
-
-The demand for enormous addressable markets is not merely investor fashion. It follows from fund size, ownership, dilution, and the power-law portfolio model.
-
-#### Qualification
-
-A real fund can receive returns from several companies, ownership differs by deal, and later investment changes the calculation. This is a Fermi estimate, not a fund model.
-
----
-
-### Slide 19 — Funding rounds are Bayesian experiments
-
-#### Main idea
-
-Each financing round buys growth, but it also buys information.
-
-| Stage | Evidence available |
-| --- | --- |
-| Pre-seed | Founders, insight, market structure, rough prototype |
-| Seed | Early product usage, partner customers, initial revenue |
-| Series A | Retention, repeatable acquisition, revenue growth |
-| Later stages | Scaling efficiency, market leadership, durability |
-
-At the earliest stage, qualitative priors dominate because meaningful quantitative evidence cannot yet exist. As the company develops, investors update their beliefs using product, customer, revenue, and market evidence.
-
-#### Useful framing
-
-> A funding round is a priced experiment designed to reach the next information milestone.
-
----
-
 ## Part IV: From a problem to a venture-investable company
 
-### Slide 20 — Great companies often start narrow
+### Slide 21 — So you want to build a startup?
 
-#### Airbnb example
+Set up the builder's operating rules with three bullets:
 
-```text
-Air mattresses for conference visitors
-              ↓
-Spare rooms
-              ↓
-Entire homes
-              ↓
-Global lodging marketplace
-```
+Label the slide “Case study: Airbnb” and show the rules beside the Airbnb example in a compact two-column table.
 
-#### Main point
+- seek pain
+- seek truth
+- **move fast**
 
-The initial product does not need to serve the eventual entire market. A startup can begin with a narrow wedge, delight that customer group, establish a position of strength, and expand outward.
+Keep the slide spare. The presenter can explain that customer discovery should identify a real problem, test what is true, and move quickly enough to learn before committing too much time or capital.
 
-The objective is not to build today's Airbnb on day one. It is to win the smallest useful initial market completely enough to earn the right to expand.
+### Slide 22 — Seek pain
 
----
+Stay with Airbnb and keep the slide sparse:
 
-### Slide 21 — Find behavior, not compliments
+> **“Sell painkillers, not vitamins”**
+>
+> **air mattresses for conference visitors**
+
+The point is to solve a problem people already feel, not to make an easy experience incrementally better. Look for existing workarounds, time or money already spent, and behavior that shows the pain is real.
+
+### Slide 23 — Past behavior beats promises
 
 Introduce the central lesson from *The Mom Test*: do not ask people to predict whether they would use an imagined product. Ask about concrete past behavior.
 
@@ -579,9 +535,67 @@ Introduce the central lesson from *The Mom Test*: do not ask people to predict w
 
 ---
 
-### Slide 22 — Live startup discovery
+### Slide 24 — Seek truth
+
+Stay with Airbnb's early customer-learning loop:
+
+1. Talk with real users.
+2. Run rapid experiments.
+3. Iterate on the problems people actually have.
+
+Keep the slide visual and spare. The speaker can explain how each pass through the loop replaced an assumption with observed behavior.
+
+---
+
+### Slide 25 — Move fast
+
+Open with the question founders hear repeatedly:
+
+> **“Why won’t company X build that?”**
+
+Do not confuse an incumbent's ability to build something with its willingness to ship it. Existing operations, incentives, and revenue streams can slow a company that has the technical resources to compete.
+
+Use two examples:
+
+- Airbnb moved against hotel chains and an existing rental marketplace, Vrbo.
+- Google publicly demonstrated LaMDA in May 2021, about eighteen months before OpenAI released ChatGPT in November 2022. Bard was the later product name. Present search-advertising disruption as a strategic complication, not a proven single motive for the timing.
+
+Sources: Google, “LaMDA: our breakthrough conversation technology,” May 18, 2021; OpenAI, “Introducing ChatGPT,” November 30, 2022; Associated Press, “Google has the next move as Microsoft embraces OpenAI buzz,” January 31, 2023.
+
+---
+
+### Slide 26 — Start narrow
+
+#### Airbnb example
+
+```text
+Global lodging marketplace
+          Entire homes
+             Spare rooms
+            Air mattresses
+```
+
+Render these as a literal downward-pointing wedge: the global marketplace is the broad top, and “Air mattresses” sits at the narrow bottom tip.
+
+Place this quote beneath the wedge:
+
+> “It’s better to have 100 people who love you than 1 million who kind of like you.”
+>
+> Paul Graham, to Brian Chesky (CEO, Airbnb)
+
+#### Main point
+
+The initial product does not need to serve the eventual entire market. A startup can begin with a narrow wedge, delight that customer group, establish a position of strength, and expand outward.
+
+The objective is not to build today's Airbnb on day one. It is to win the smallest useful initial market completely enough to earn the right to expand.
+
+---
+
+### Slide 27 — The Mom Test
 
 Interview a known audience member about a domain such as sports betting or sports analytics.
+
+Show the cover of Rob Fitzpatrick's *The Mom Test* beside the live interview questions and timer. Do not add a separate “valid conclusions” panel; keep the possible outcomes in the speaker notes.
 
 #### Goals
 
@@ -594,7 +608,7 @@ Interview a known audience member about a domain such as sports betting or sport
 #### Guardrails
 
 - Ask the volunteer for consent in advance and agree on the domain, but do not plant answers.
-- Put a six- or seven-minute timer on the segment.
+- Put a five-minute timer on the segment.
 - Keep the discovery questions visible on the slide.
 - Prepare a sports-data example that can serve as a rescue path.
 - Treat “this is not a good startup opportunity” as a valid result.
@@ -603,116 +617,108 @@ The exercise succeeds if it demonstrates disciplined belief updating, not only i
 
 ---
 
-### Slide 23 — A Fermi estimate of the opportunity
+## Part V: How much is an idea worth?
 
-Turn the live problem into a rough bottom-up market calculation:
+### Slide 28 — How much is an idea worth?
+
+Open with the valuation problem at its hardest: the company may have no revenue, no customers, and no working product.
+
+The practical market answer is the price that comparable startups with comparable founder profiles have recently been able to raise. For this talk, use the financing mechanics already established in the deck to derive a rough valuation floor instead.
+
+Keep this as a dark bridge slide with only the question.
+
+---
+
+### Slide 29 — Start with runway
+
+A round should buy enough time to reach the next fundraising milestone. Use this illustrative pre-product budget:
+
+- Founder plus two or three employees
+- 12–18 months of runway
+- Computers, hosting, third-party software, and workspace if needed
+- No revenue to offset the burn
+
+For the example, assume the company needs roughly $500,000.
+
+This is back-of-the-napkin arithmetic, not a current market benchmark. The exact amount depends on salaries, location, product, infrastructure, and the milestone the next investor will require.
+
+---
+
+### Slide 30 — The valuation floor
+
+Early rounds often sell roughly 15–20% of the company. Use 20% for the arithmetic:
 
 \[
-\text{potential customers}
-\times
-\text{annual spending per customer}
+\text{post-money valuation}
 =
-\text{reachable annual market}
+\frac{\$500\text{k}}{20\%}
+=
+\$2.5\text{M}
 \]
 
-Possible follow-up factors:
+The company needs at least $500,000 and does not want to sell much more than 20%, so the implied post-money valuation is at least $2.5 million.
 
-- How many people or organizations experience the problem?
-- How frequently does it occur?
-- What do they spend on the current workaround?
-- Which subset can the initial product realistically serve?
-- What adjacent customers could the company serve later?
-
-#### Main distinction
-
-A painful problem can produce a good business without producing a venture-scale company. Market sizing tests whether the opportunity can eventually generate an outcome large enough for the portfolio model.
-
-Prefer this bottom-up calculation over beginning with a vague multibillion-dollar industry report.
+A higher valuation could let the founder raise more money or sell less ownership. Taking materially less cash shortens the runway; selling materially more equity makes later dilution harder. The result is a financing constraint for this example, not a claim that every idea is worth $2.5 million.
 
 ---
 
-## Part V: Valuation, incentives, and conclusion
+### Slide 31 — Will VCs believe it?
 
-### Slide 24 — What might we invest today?
+The decision rests on two beliefs:
 
-Use the hypothetical sports-data company.
+- The market has a credible path to enough scale, with room for a 10–100× outcome over time.
+- The founder can make a convincing case that this team can reach it.
 
-#### Simplified successful outcome
+Use this slide to introduce the two-part investment test. The next slide puts numbers on the market claim.
 
-- Possible exit value: $500 million
-- Estimated probability of reaching it: 5%
+If both claims hold, a venture investor might fund the $500,000 round at the implied valuation. “Might” matters: this model explains the logic of a possible investment, not a guaranteed term sheet.
+
+---
+
+### Slide 32 — Market size
+
+Now ask whether an investor can believe that valuation. The first test is a bottom-up market calculation:
 
 \[
-0.05\times\$500\text{M}=\$25\text{M}
+\text{customers}
+\times
+\text{average annual contract}
+=
+\text{annual market}
 \]
 
-#### Essential clarification
+For example:
 
-$25 million is an expected terminal value, not automatically the company's fair present valuation.
+\[
+2{,}500\times\$10{,}000=\$25\text{M per year}
+\]
 
-The investor must still account for:
+The same $25 million target could come from 12,500 customers paying $2,000 per year or 500 customers paying $50,000 per year. Challenge each input:
 
-- Time until the exit
-- Future dilution
-- Additional financing required
-- The probability and size of intermediate outcomes
-- Execution and market risk
-- Investor return requirements
-- Deal terms and ownership rights
+- Would a lower price attract substantially more customers?
+- Would a meaningful subset pay for a premium product?
+- Could the company expand into adjacent markets?
 
-After making those assumptions, an investor might offer $2 million at a $10 million post-money valuation, receiving 20% of the company.
+The simple formula hides difficult modeling choices. The target is illustrative, not a universal venture threshold.
 
-The point is the reasoning process, not the specific price.
+Color the calculated annual market against the example's $25 million requirement:
 
----
+- Below $25 million: red
+- $25 million to under $50 million: black
+- $50 million or more: green
 
-### Slide 25 — The highest valuation is not always the best
-
-#### Four failure modes
-
-- **Too little capital:** the company cannot reach its next meaningful milestone.
-- **Too much capital:** the team may scale prematurely or lose spending discipline.
-- **Too low a valuation:** founders and employees surrender too much ownership.
-- **Too high a valuation:** the next financing round requires an implausibly large increase in evidence and company value.
-
-#### Game-theoretic framing
-
-The founders and investors negotiate competitively, but both benefit from the company's ability to raise the next round and ultimately succeed.
-
-The useful region is therefore neither side's most extreme short-term preference. It is an overlapping region in which:
-
-- The company receives enough money to reach its milestone.
-- The founders retain motivating ownership.
-- The investor can earn a meaningful return.
-- The next valuation remains credible if execution goes reasonably well.
-
-#### Possible visual
-
-Two overlapping utility curves or acceptable ranges:
-
-```text
-Founder acceptable range:     [──────────────]
-Investor acceptable range:          [────────────]
-Mutually workable region:           [──────]
-```
+Include a text status with the color so the threshold is not communicated by color alone.
 
 ---
 
-### Slide 26 — What the mathematics cannot answer
+### Slide 33 — Most startups fail. Most are still worthwhile.
 
-Return to the career story and the role of obsession.
+End on a dark slide with only this two-line statement:
 
-#### Suggested conclusion
+> Most startups fail.
+> Most are still worthwhile.
 
-> Mathematics can tell us what kind of company could return a venture fund. It cannot tell us which problem a founder will care enough to spend the next decade solving.
->
-> My career was shaped less by choosing the most practical subject than by finding work I could become obsessed with. A venture-scale company needs both: a problem whose value can compound and founders whose motivation can survive the journey.
-
-#### Final distinction
-
-- Market size is not a substitute for motivation.
-- Motivation is not a substitute for venture-scale economics.
-- A strong venture opportunity requires both.
+Do not add supporting copy, labels, or a concluding diagram. Pause before questions.
 
 ---
 
@@ -743,7 +749,7 @@ The opening uses two round-number teaching assumptions:
 - A broad S&P 500 index fund doubles in roughly eight years at about 9% annualized.
 - The venture fund must return at least 3× over roughly eight years, or about 14.7% annualized, to justify the additional risk in this talk's framework.
 
-The first is a Rule of 72 approximation, not a promise about any particular eight-year period. The second is the talk's working hurdle, not an industry-wide standard. Compare both on the same gross-or-net basis. For the spoken investor comparison, prefer net returns; a venture portfolio must earn more before fees and carried interest.
+The S&P 500 slide uses the Macrotrends annual average price series. It is a price-index chart, so dividends are excluded, and the 2026 value is year-to-date. The 9% figure on the following benchmark slide is a Rule of 72 teaching assumption, not a slope fitted to the price chart or a promise about any particular period. The 3× hurdle is the talk's working benchmark, not an industry-wide standard. Compare both on the same gross-or-net basis. For the spoken investor comparison, prefer net returns; a venture portfolio must earn more before fees and carried interest.
 
 ## The second coin game
 
@@ -761,13 +767,13 @@ Specify the indexing convention carefully. The cleanest spoken version is that t
 
 For mathematical precision, describe the power law using the survival or tail distribution \(P(X\ge x)\), because the game has discrete payouts at powers of two rather than a continuous probability density over every possible dollar value.
 
-## Expected terminal value
+## Early-stage valuation model
 
-A 5% probability of a $500 million outcome produces $25 million of expected terminal value under the simplified two-outcome model. It does not produce a $25 million present valuation.
+The $500,000 round, 20% dilution, and $2.5 million post-money valuation are linked assumptions in one illustrative financing model. They are not current market benchmarks or universal terms. If one changes, update the equation and the accompanying speaker notes together.
 
-## Market-share assumptions
+## Market-sizing assumptions
 
-Avoid presenting 3–5% market share as a universal rule. Market concentration varies enormously. Use an explicit assumed capture rate and allow the audience to challenge it.
+The $25 million annual market is an illustrative target, not a universal venture threshold. Customer count, contract value, pricing tiers, and adjacent-market expansion must be modeled explicitly rather than hidden inside a top-down market-share estimate.
 
 ## Y Combinator example
 
@@ -780,6 +786,7 @@ Do not claim that the funding schedule alone proves or creates a power law. The 
 # Sources to include in the eventual deck
 
 - Investor.gov, [What is compound interest?](https://www.investor.gov/additional-resources/information/youth/teachers-classroom-resources/what-compound-interest)
+- Macrotrends, [S&P 500 — 100 Year Historical Chart & Data](https://www.macrotrends.net/datasets/2324/sp-500-historical-chart-data)
 - Frank Odom, [On Power Laws](https://fkodom.com/blog/on-power-laws)
 - Paul Graham, [Black Swan Farming](https://paulgraham.com/swan.html)
 - Peter Thiel with Blake Masters, *Zero to One*

@@ -6,7 +6,7 @@ This file is the operating guide for AI coding agents working in this repository
 
 Build a polished, browser-based presentation for a 45–50 minute public talk hosted by the Sewanee mathematics department in 2026.
 
-The working title is **How Nine Failures Make a Fund: Power laws, expected value, and the mathematics of venture capital**.
+The presentation title is **The Math of Venture Capital**.
 
 The central thesis is:
 
@@ -19,11 +19,11 @@ The audience is mathematically curious but should not need advanced coursework. 
 Use this priority order when instructions conflict:
 
 1. The user's current request.
-2. [`docs/venture-capital-talk-plan.md`](docs/venture-capital-talk-plan.md) for narrative, timing, facts, caveats, and the intended 26 narrative beats.
+2. [`docs/venture-capital-talk-plan.md`](docs/venture-capital-talk-plan.md) for narrative, timing, facts, caveats, and the intended 33 narrative beats.
 3. This file for implementation and design conventions.
 4. The current code for established implementation and visual conventions.
 
-The original seven-slide placeholder has been replaced by a full 29-slide implementation. The plan's 26 narrative beats remain intact, and each coin game is split into a setup slide and a distribution slide. Treat the current deck as the working presentation, while continuing to use the talk plan as the authority for narrative, facts, caveats, and sequence. Do not discard working slide compositions merely because the earlier placeholder was disposable.
+The original seven-slide placeholder has been replaced by a full 36-slide implementation. The current deck adds a title slide and speaker background, splits each coin game into a setup and distribution slide, adds builder-principles, pain, truth, and speed slides, expands early-stage valuation into five slides, and omits the plan's standalone power-law derivation slide. Treat the current deck as the working presentation, while continuing to use the talk plan as the authority for narrative, facts, and caveats. Do not discard working slide compositions merely because the earlier placeholder was disposable.
 
 Do not alter the central argument, numerical examples, qualifications, or conclusion merely to simplify implementation. If a factual or narrative change appears necessary, call it out explicitly.
 
@@ -48,7 +48,7 @@ bun run build
 bun run preview
 ```
 
-Run both `bun run lint` and `bun run build` after meaningful code changes. A successful build is the minimum completion criterion. Visually inspect every changed slide at the 1440 × 810 reference size and at a normal laptop viewport.
+Run both `bun run lint` and `bun run build` after meaningful code changes. A successful build is the minimum completion criterion. Do not open the browser for routine slide edits unless the user asks for visual QA, reports a visual problem, or the change depends on browser-only behavior. When browser QA is warranted, inspect only the affected slides and relevant viewports rather than replaying the entire deck by default.
 
 ## Current repository state
 
@@ -152,7 +152,7 @@ The canonical tokens live in `src/index.css`:
 
 - `--paper` is the default slide background.
 - `--ink` is the default text and the background for high-contrast bridge slides.
-- `--tail` marks the power-law tail, pivotal claims, progress, and slide numbering.
+- `--tail` marks the power-law tail, pivotal claims, and progress.
 - `--teal` supports secondary quantitative comparisons.
 - `--gold` is available sparingly; do not introduce additional accent colors without a clear semantic need.
 
@@ -170,8 +170,11 @@ Use typography, whitespace, rules, and a small number of strong shapes before ad
 - Design at 1440 × 810 and retain generous outer margins.
 - Every slide needs one dominant idea that is legible from the back of a room.
 - Prefer one sentence, equation, chart, or comparison over dense bullet lists.
+- Leave space empty when the presenter will supply the explanation. Do not add captions, takeaways, caveats, summary sentences, or decorative equations merely to fill the composition.
+- On-slide text should earn its place: keep only the title, essential rules or labels, source attribution, and qualifications that materially change interpretation. Put spoken transitions and supporting explanation in speaker notes.
 - Keep body text around the existing 21–24 px scale and major titles around the existing 50–72 px scale; opening statements may be much larger.
-- Keep manual narrative numbering in the top-right corner. Do not add eyebrow, overline, kicker, or tiny section-context labels above slide titles.
+- Use the shared `deck-bullets` class for unordered bullet lists: native red disc markers, shared indentation, and the common 24 px body size. Preserve larger type only for deliberate non-bullet display treatments.
+- Use reveal.js's automatic slide number only. Do not add manual counters, eyebrow, overline, kicker, or tiny section-context labels above slide titles.
 - Dark slides should mark major transitions or high-impact claims, not become the default.
 - Charts should share the deck palette, visible baselines, direct labels, and minimal legends.
 - Keep essential content within the slide frame; do not rely on scrolling.
@@ -191,39 +194,46 @@ The talk follows this arc:
 
 > Paradox → mathematical model → empirical evidence → investor implications → company discovery → valuation → human conclusion
 
-The talk plan defines 26 narrative beats. The current implementation expands the three games into separate setup and result slides, producing this 29-slide sequence:
+The talk plan defines 33 narrative beats. The current implementation adds a title slide and speaker background, expands the three games into separate setup and result slides, adds builder-principles, pain, truth, and speed slides, and omits the standalone derivation, producing this 36-slide sequence:
 
-1. Most startups fail.
-2. The S&P 500 already sets a high bar.
-3. Venture has to clear a higher bar.
-4. Three coin-flipping games.
-5. Game 1: additive outcomes — setup.
-6. Additive outcomes cluster around an average.
-7. Game 2: multiplicative outcomes — setup.
-8. The mean stays at $1. The typical outcome does not.
-9. Game 3: multiplication with elimination — setup.
-10. Rare extremes remain economically important.
-11. Deriving the power law.
-12. Venture capital looks much more like Game 3.
-13. Advance with evidence, or the game ends.
-14. Every rung filters companies and reprices survivors.
-15. A few investments can determine the portfolio.
-16. Could this company return the fund?
-17. Growth mechanics and capital allocation reinforce one another.
-18. Choose the path that leaves more paths open.
-19. Evaluate companies. Build them.
-20. Match the capital to the engine.
-21. The portfolio sets the scale of the opportunity.
-22. Each round buys growth—and information.
-23. Win a narrow market. Then expand.
-24. Past behavior beats future promises.
-25. Follow the evidence.
-26. How many customers, spending how much?
-27. Expected terminal value is a starting point.
-28. The useful deal leaves room for both sides to win.
-29. What the mathematics cannot answer.
+1. The Math of Venture Capital.
+2. My background.
+3. Most startups fail.
+4. The S&P 500.
+5. Venture must outperform.
+6. Three coin games.
+7. Game 1: additive.
+8. Normal distribution.
+9. Game 2: multiplicative.
+10. Log-normal distribution.
+11. Game 3: elimination.
+12. Pareto distribution (Power law).
+13. Venture resembles Game 3.
+14. What's in a venture investment?
+15. Capital for equity.
+16. Advance or stop.
+17. A round buys time.
+18. A round buys information.
+19. The funding ladder.
+20. Power laws.
+21. Dilution.
+22. A round buys fuel.
+23. Buy vs. Build.
+24. So you want to build a startup?
+25. Seek pain.
+26. Past behavior beats promises.
+27. Seek truth.
+28. Move fast.
+29. Start narrow.
+30. The Mom Test.
+31. How much is an idea worth?
+32. Start with runway.
+33. The valuation floor.
+34. Will VCs believe it?
+35. Market size.
+36. Most startups fail. Most are still worthwhile.
 
-Keep the first 13 slides centered on the paradox, model, and evidence. Personal biography begins only after the framework has earned the audience's attention. The live discovery segment is a real exercise with a prepared participant, visible questions, a six- or seven-minute timer, and a rescue example. It must be allowed to conclude that the idea is not a good startup opportunity.
+After the brief background slide, keep slides 3–22 centered on the paradox, model, and evidence. The investor-and-builder framework begins only after the mathematics has earned the audience's attention. The live discovery segment is a real exercise with a prepared participant, visible questions, a five-minute timer, and a rescue example. It must be allowed to conclude that the idea is not a good startup opportunity.
 
 Approximate timing:
 
@@ -242,16 +252,17 @@ This talk depends on careful distinctions. Preserve them in on-slide copy, speak
 
 ### Investment benchmark
 
+- Slide 4 plots the Macrotrends annual average S&P 500 price series on a logarithmic vertical scale. It is a price-index history, so dividends are excluded. Treat the 2026 point as year-to-date.
 - Use 9% as a Rule of 72 teaching assumption for the public-index alternative: `2^(1/8) − 1 ≈ 9.1%`, so invested capital roughly doubles in eight years. State that this is an average and not a forecast for any particular period.
 - Use at least 3× over roughly eight years as this talk's venture hurdle: `3^(1/8) − 1 ≈ 14.7%`. Do not present it as an industry-wide promise or guaranteed fund result.
 - Compare both alternatives on the same basis. For the spoken investor comparison, prefer net-to-investor returns; gross venture portfolio performance must be higher before fees and carried interest.
 
 ### Additive and multiplicative games
 
-- Game 1 is a sum of 100 fair `+$1 / −$1` flips and has expected value zero.
+- Game 1 is a sum of 100 fair `+$1 / +$0` flips and has expected value $50. Its original tree and simulation figures are bundled from [On Power Laws](https://fkodom.com/blog/on-power-laws).
 - Game 2 must use multipliers of `1.1` and `0.9`. Its one-step expected multiplier is one, while a 50/50 path ends at `0.99^50 ≈ 0.61`.
 - Do not replace Game 2 with double-or-halve. That game has expected multiplier `1.25` and defeats the intended comparison.
-- The locally bundled Game 2 and Game 3 figures come from Frank Odom's [On Power Laws](https://fkodom.com/blog/on-power-laws). Do not reuse the article's Game 1 figure: it uses `+$1 / +$0`, while this talk requires `+$1 / −$1`. The in-deck Game 1 SVG deliberately redraws that model in a compatible style.
+- All three games use locally bundled figures from Frank Odom's [On Power Laws](https://fkodom.com/blog/on-power-laws).
 
 ### St. Petersburg game and power law
 
@@ -269,16 +280,18 @@ P(X ≥ x) = x^(log_m s) = x^(-α)
 
 Explain the intuition before revealing the algebra: each successive level is less likely to be reached, but a survivor is proportionally more valuable.
 
+Keep the derivation in the plan and speaker preparation. Do not restore it as a standalone slide unless the user asks.
+
 ### Venture claims
 
 - Companies are not literal independent coin flips. The analogy concerns staged elimination and multiplicative payoff structure.
 - Do not claim the financing schedule alone creates a power law. The defensible claim is a feedback loop between company growth mechanics and investor selection/capital allocation.
 - The 2012 Y Combinator claim is that Airbnb and Dropbox represented roughly three-quarters of portfolio value at that time, not 90% of all historical profits.
-- Peter Thiel's “return the fund” idea is an investment consequence, not independent empirical evidence.
+- The dotted “the fund” threshold on the illustrative portfolio chart is a scale marker, not an observed portfolio statistic.
 
 ### Valuation
 
-`5% × $500M = $25M` is expected **terminal** value in a simplified two-outcome model. It is not automatically a fair present valuation. Time, dilution, future capital, other outcomes, risk, required return, ownership rights, and deal terms still matter.
+The `$500k ÷ 20% = $2.5M` post-money valuation is an illustrative financing constraint. The $500,000 round, 20% dilution, and $2.5 million valuation are linked assumptions, not current market benchmarks or universal terms. The $25 million annual-market example is also illustrative rather than a universal venture threshold.
 
 ### Source hygiene
 
@@ -304,6 +317,8 @@ When revising a number:
 ## Speaker notes and on-slide copy
 
 Slides support the speaker; they do not contain the entire talk. Keep caveats in notes when they are essential for accuracy but would overload the visual. Put any qualification that materially changes the audience's interpretation on the slide itself.
+
+Do not add explanatory prose to every slide. Empty space is preferable to generic interpretation, repeated conclusions, or sentences the presenter will say aloud. Treat the speaker notes as the default home for transitions, derivations, and supporting detail; add on-slide prose only when the audience must read it.
 
 ### Copy-editing policy
 
@@ -365,17 +380,16 @@ Use sentence case in titles and labels unless the established component uses upp
 Before declaring a deck change complete:
 
 - [ ] The change follows the narrative in the talk plan.
-- [ ] Slide numbering remains consistent; no tiny section-context labels have been reintroduced above titles.
+- [ ] Reveal.js remains the only source of slide numbering; no manual counters or tiny section-context labels have been introduced above titles.
 - [ ] Mathematical notation and numerical examples are correct.
 - [ ] Sourced figures include provenance and a date or cohort where appropriate.
-- [ ] The slide has one clear visual hierarchy and no clipped content at 1440 × 810.
-- [ ] The slide is legible at a typical laptop viewport and in fullscreen.
+- [ ] The slide has one clear visual hierarchy and no obvious clipping in the implementation.
 - [ ] Fragments appear in the correct speaking order.
 - [ ] Keyboard navigation and interactive fallbacks work.
 - [ ] Accessibility labels are present for meaningful visuals.
 - [ ] `bun run lint` passes.
 - [ ] `bun run build` passes.
-- [ ] Changed slides have been visually inspected, not only compiled.
+- [ ] Browser QA was performed only if the user requested it, reported a visual problem, or the change required browser-only verification.
 
 ## Avoid
 

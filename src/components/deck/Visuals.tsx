@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 
+import { sp500AnnualAverages } from '../../data/sp500-annual-average'
+
 type DistributionKind = 'normal' | 'lognormal' | 'power'
 
 const paths: Record<DistributionKind, string> = {
@@ -48,110 +50,247 @@ export function DistributionChart({
   )
 }
 
-type TreeNode = { x: number; y: number; value: string }
+export function Sp500HistoryChart() {
+  const width = 1180
+  const height = 465
+  const plot = { top: 26, right: 32, bottom: 52, left: 76 }
+  const firstYear = sp500AnnualAverages[0].year
+  const lastYear = sp500AnnualAverages.at(-1)?.year ?? firstYear
+  const logMin = Math.log10(5)
+  const logMax = Math.log10(10000)
+  const x = (year: number) =>
+    plot.left + ((year - firstYear) / (lastYear - firstYear)) * (width - plot.left - plot.right)
+  const y = (average: number) =>
+    plot.top + ((logMax - Math.log10(average)) / (logMax - logMin)) * (height - plot.top - plot.bottom)
+  const path = sp500AnnualAverages
+    .map((point, index) => `${index === 0 ? 'M' : 'L'} ${x(point.year).toFixed(2)} ${y(point.average).toFixed(2)}`)
+    .join(' ')
+  const yearTicks = [1927, 1940, 1960, 1980, 2000, 2020, 2026]
+  const priceTicks = [10, 100, 1000, 10000]
+  const latest = sp500AnnualAverages.at(-1) ?? sp500AnnualAverages[0]
+  const latestPrice = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(latest.average)
 
-const additiveTreeLevels: TreeNode[][] = [
-  [{ x: 380, y: 48, value: '$0' }],
-  [
-    { x: 210, y: 166, value: '−$1' },
-    { x: 550, y: 166, value: '+$1' },
-  ],
-  [
-    { x: 95, y: 286, value: '−$2' },
-    { x: 285, y: 286, value: '$0' },
-    { x: 475, y: 286, value: '$0' },
-    { x: 665, y: 286, value: '+$2' },
-  ],
-  [
-    { x: 45, y: 414, value: '−$3' },
-    { x: 140, y: 414, value: '−$1' },
-    { x: 235, y: 414, value: '−$1' },
-    { x: 330, y: 414, value: '+$1' },
-    { x: 430, y: 414, value: '−$1' },
-    { x: 525, y: 414, value: '+$1' },
-    { x: 620, y: 414, value: '+$1' },
-    { x: 715, y: 414, value: '+$3' },
-  ],
-]
-
-export function AdditiveDecisionTree() {
   return (
-    <svg
-      className="additive-tree"
-      viewBox="0 0 760 465"
-      role="img"
-      aria-label="An additive coin-flip decision tree where heads adds one dollar and tails subtracts one dollar"
-    >
-      <title>Additive coin-flip decision tree</title>
-      {additiveTreeLevels.slice(0, -1).flatMap((level, levelIndex) =>
-        level.flatMap((node, nodeIndex) => {
-          const children = additiveTreeLevels[levelIndex + 1]
-          const tails = children[nodeIndex * 2]
-          const heads = children[nodeIndex * 2 + 1]
-          return [
-            <g key={`t-${levelIndex}-${nodeIndex}`}>
-              <line className="tree-edge tree-edge-tails" x1={node.x} y1={node.y} x2={tails.x} y2={tails.y} />
-              <text className="tree-edge-label tree-edge-label-tails" x={(node.x + tails.x) / 2 - 12} y={(node.y + tails.y) / 2}>T</text>
-            </g>,
-            <g key={`h-${levelIndex}-${nodeIndex}`}>
-              <line className="tree-edge tree-edge-heads" x1={node.x} y1={node.y} x2={heads.x} y2={heads.y} />
-              <text className="tree-edge-label tree-edge-label-heads" x={(node.x + heads.x) / 2 + 8} y={(node.y + heads.y) / 2}>H</text>
-            </g>,
-          ]
-        }),
-      )}
-      {additiveTreeLevels.flat().map((node, index) => (
-        <g className="tree-value-node" key={`${node.value}-${index}`}>
-          <circle cx={node.x} cy={node.y} r="30" />
-          <text x={node.x} y={node.y + 7}>{node.value}</text>
+    <figure className="sp500-history-chart">
+      <figcaption><span>Annual average price</span><span>log scale</span></figcaption>
+      <svg
+        viewBox={`0 0 ${width} ${height}`}
+        role="img"
+        aria-label="Annual average S&P 500 price from 1927 through 2026 on a logarithmic vertical scale"
+      >
+        <title>S&amp;P 500 annual average price, 1927–2026</title>
+        {priceTicks.map((tick) => (
+          <g className="sp500-price-tick" key={tick}>
+            <line x1={plot.left} x2={width - plot.right} y1={y(tick)} y2={y(tick)} />
+            <text x={plot.left - 14} y={y(tick) + 5} textAnchor="end">
+              {tick >= 1000 ? `$${tick / 1000}k` : `$${tick}`}
+            </text>
+          </g>
+        ))}
+        {yearTicks.map((tick) => (
+          <g className="sp500-year-tick" key={tick}>
+            <line x1={x(tick)} x2={x(tick)} y1={height - plot.bottom} y2={height - plot.bottom + 8} />
+            <text x={x(tick)} y={height - 18} textAnchor={tick === firstYear ? 'start' : tick === lastYear ? 'end' : 'middle'}>
+              {tick}
+            </text>
+          </g>
+        ))}
+        <line className="sp500-axis" x1={plot.left} x2={plot.left} y1={plot.top} y2={height - plot.bottom} />
+        <line className="sp500-axis" x1={plot.left} x2={width - plot.right} y1={height - plot.bottom} y2={height - plot.bottom} />
+        <path className="sp500-series" d={path} />
+        <circle className="sp500-latest-dot" cx={x(latest.year)} cy={y(latest.average)} r="6" />
+        <g className="sp500-latest-label">
+          <text x={x(latest.year) - 14} y={y(latest.average) - 18} textAnchor="end">{latest.year} YTD</text>
+          <text x={x(latest.year) - 14} y={y(latest.average) + 3} textAnchor="end">${latestPrice}</text>
         </g>
-      ))}
-    </svg>
+      </svg>
+    </figure>
   )
 }
 
-const normalHistogram = [2, 5, 11, 21, 38, 59, 79, 94, 100, 94, 79, 59, 38, 21, 11, 5, 2]
+type DilutionHolding = {
+  label: string
+  round: number
+  shares: number
+  kind: 'founder' | 'initial' | 'prior' | 'latest'
+}
 
-export function NormalSimulationChart() {
+type DilutionSnapshot = {
+  holdings: DilutionHolding[]
+  totalShares: number
+}
+
+const dilutionRoundOptions = [0, 1, 2, 3, 4]
+const roundFundingMultiple = 3
+
+function buildDilutionSnapshot(round: number, followOn: boolean): DilutionSnapshot {
+  let totalShares = 100
+  let previousTotalShares = 100
+  let issuedShares = 0
+  let newCapitalShares = 0
+  let followOnShares = 0
+  let holdings: DilutionHolding[] = [{ label: 'Founder', round: 0, shares: 100, kind: 'founder' }]
+
+  for (let index = 1; index <= round; index += 1) {
+    previousTotalShares = totalShares
+    issuedShares = totalShares * 0.25
+    totalShares += issuedShares
+    followOnShares = 0
+
+    if (followOn) {
+      holdings = holdings.map((holding) => {
+        if (holding.kind === 'founder') return holding
+        const targetShares = (holding.shares / previousTotalShares) * totalShares
+        followOnShares += targetShares - holding.shares
+        return { ...holding, shares: targetShares }
+      })
+    }
+
+    newCapitalShares = issuedShares - followOnShares
+    holdings = [
+      ...holdings,
+      { label: `Round ${index}`, round: index, shares: newCapitalShares, kind: 'latest' } satisfies DilutionHolding,
+    ].map((holding, holdingIndex, allHoldings): DilutionHolding => {
+      const kind: DilutionHolding['kind'] = holding.round === 1
+        ? 'initial'
+        : holdingIndex === allHoldings.length - 1
+          ? 'latest'
+          : holding.kind === 'latest'
+            ? 'prior'
+            : holding.kind
+      return { ...holding, kind }
+    })
+  }
+
+  return {
+    holdings,
+    totalShares,
+  }
+}
+
+function formatPercent(value: number) {
+  if (value === 0) return '0%'
+  const rounded = Math.round(value)
+  const display = Math.abs(value - rounded) < 0.05 ? `${rounded}` : value.toFixed(1)
+  return `${display}%`
+}
+
+function formatFunding(value: number) {
+  if (value === 0) return '—'
+  return `$${value.toFixed(value >= 10 ? 0 : 1).replace(/\.0$/, '')}M`
+}
+
+function roundOneOwnership(snapshot: DilutionSnapshot) {
+  const shares = snapshot.holdings.find((holding) => holding.round === 1)?.shares ?? 0
+  return snapshot.totalShares > 0 ? (shares / snapshot.totalShares) * 100 : 0
+}
+
+function roundOneValue(snapshot: DilutionSnapshot, funding: number) {
+  if (funding === 0) return 0
+  return (funding / 0.2) * (roundOneOwnership(snapshot) / 100)
+}
+
+export function DilutionSimulator() {
+  const [round, setRound] = useState(3)
+  const [followOn, setFollowOn] = useState(false)
+  const snapshot = buildDilutionSnapshot(round, followOn)
+  const noProRataSnapshot = buildDilutionSnapshot(round, false)
+  const proRataSnapshot = buildDilutionSnapshot(round, true)
+  const roundFunding = round === 0 ? 0 : roundFundingMultiple ** (round - 1)
+  const cumulativeFunding = round === 0 ? 0 : (roundFundingMultiple ** round - 1) / (roundFundingMultiple - 1)
+  const noProRataInvested = round === 0 ? 0 : 1
+  const proRataInvested = round === 0 ? 0 : 1 + Array.from({ length: Math.max(0, round - 1) }, (_, index) => 0.2 * roundFundingMultiple ** (index + 1)).reduce((sum, value) => sum + value, 0)
+  const activeSnapshot = followOn ? proRataSnapshot : noProRataSnapshot
+
+  const ownershipLabel = snapshot.holdings
+    .map((holding) => `${holding.label} ${formatPercent((holding.shares / snapshot.totalShares) * 100)}`)
+    .join(', ')
+
   return (
-    <svg
-      className="normal-simulation"
-      viewBox="0 0 920 470"
-      role="img"
-      aria-label="A simulated histogram of additive outcomes centered at zero with a theoretical normal curve"
-    >
-      <title>Additive outcomes approximate a normal distribution centered at zero</title>
-      <line className="simulation-axis" x1="76" x2="880" y1="395" y2="395" />
-      <line className="simulation-axis" x1="76" x2="76" y1="45" y2="395" />
-      <line className="simulation-center" x1="478" x2="478" y1="56" y2="395" />
-      <g className="simulation-bars">
-        {normalHistogram.map((value, index) => {
-          const height = value * 3.15
-          return <rect key={index} x={96 + index * 44} y={395 - height} width="42" height={height} />
-        })}
-      </g>
-      <path
-        className="simulation-curve"
-        d="M 86 394 C 182 393 233 370 289 306 C 348 239 385 83 478 79 C 571 83 608 239 667 306 C 723 370 774 393 870 394"
-      />
-      <g className="simulation-ticks">
-        <text x="94" y="430">−30</text>
-        <text x="222" y="430">−20</text>
-        <text x="350" y="430">−10</text>
-        <text x="472" y="430">0</text>
-        <text x="598" y="430">10</text>
-        <text x="726" y="430">20</text>
-        <text x="854" y="430">30</text>
-      </g>
-      <text className="simulation-axis-title" x="478" y="463">Payout ($)</text>
-      <text className="simulation-axis-title" x="18" y="235" transform="rotate(-90 18 235)">Probability density</text>
-      <g className="simulation-legend">
-        <rect x="558" y="62" width="44" height="16" />
-        <text x="616" y="77">Simulation (10,000 trials)</text>
-        <line x1="558" x2="602" y1="104" y2="104" />
-        <text x="616" y="111">Normal distribution</text>
-      </g>
-    </svg>
+    <div className="dilution-simulator">
+      <div className="dilution-controls-row">
+        <div className="dilution-round-control" role="group" aria-label="Select financing round">
+          <span>round</span>
+          <div className="dilution-round-buttons">
+            {dilutionRoundOptions.map((option) => (
+              <button
+                aria-pressed={round === option}
+                className={round === option ? 'is-active' : ''}
+                key={option}
+                onClick={() => setRound(option)}
+                type="button"
+              >
+                {option === 0 ? 'start' : option}
+              </button>
+            ))}
+          </div>
+        </div>
+        <button
+          aria-pressed={followOn}
+          className={`dilution-follow-on ${followOn ? 'is-active' : ''}`}
+          onClick={() => setFollowOn((value) => !value)}
+          type="button"
+        >
+          <span>pro rata</span>
+          <strong>{followOn ? 'on' : 'off'}</strong>
+        </button>
+      </div>
+
+      <div className="dilution-main">
+        <div className="dilution-chart-block">
+          <div className="dilution-stack" aria-label={`Ownership after ${round === 0 ? 'the start' : `round ${round}`}: ${ownershipLabel}`} role="img">
+            {snapshot.holdings.map((holding) => {
+              const percent = (holding.shares / snapshot.totalShares) * 100
+              return (
+                <span
+                  className={`dilution-segment dilution-segment-${holding.kind}`}
+                  key={holding.label}
+                  style={{ width: `${percent}%` }}
+                >
+                  {holding.label.replace('Round ', 'R')} {formatPercent(percent)}
+                </span>
+              )
+            })}
+          </div>
+          <div className="dilution-model">
+            <h3>Model</h3>
+            <ul className="deck-bullets">
+              <li>new shares = existing shares × ¼</li>
+              <li>50% survival rate</li>
+              <li>3× individual round sizes</li>
+            </ul>
+          </div>
+          </div>
+
+        <div className="dilution-stats">
+          <div className="dilution-stat">
+            <span>Valuation</span>
+            <strong>{formatFunding(roundFunding / 0.2)}</strong>
+            <small>{round === 0 ? 'no financing yet' : 'company · post-money'}</small>
+          </div>
+          <div className="dilution-stat">
+            <span>Total funding</span>
+            <strong>{formatFunding(cumulativeFunding)}</strong>
+            <small>{round === 0 ? 'no financing yet' : `${formatFunding(roundFunding)} latest round`}</small>
+          </div>
+          <div className="dilution-stat">
+            <span>Total invested</span>
+            <strong>{formatFunding(followOn ? proRataInvested : noProRataInvested)}</strong>
+            <small>{followOn ? 'pro rata' : 'no pro rata'} · Round 1 investor · through this round</small>
+          </div>
+          <div className="dilution-stat">
+            <span>Equity percent</span>
+            <strong>{formatPercent(roundOneOwnership(followOn ? proRataSnapshot : noProRataSnapshot))}</strong>
+            <small>{followOn ? 'pro rata' : 'no pro rata'} · Round 1 investor · after this round</small>
+          </div>
+          <div className="dilution-stat dilution-stat-emphasis">
+            <span>Equity value</span>
+            <strong>{formatFunding(roundOneValue(activeSnapshot, roundFunding))}</strong>
+            <small>{followOn ? 'pro rata' : 'no pro rata'} · current company value</small>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -163,7 +302,7 @@ export function Coin({ outcome, index }: { outcome: 'H' | 'T' | '?'; index?: num
   )
 }
 
-export function CountdownTimer({ initialSeconds = 7 * 60 }: { initialSeconds?: number }) {
+export function CountdownTimer({ initialSeconds = 5 * 60 }: { initialSeconds?: number }) {
   const [seconds, setSeconds] = useState(initialSeconds)
   const [running, setRunning] = useState(false)
 
@@ -180,7 +319,7 @@ export function CountdownTimer({ initialSeconds = 7 * 60 }: { initialSeconds?: n
   const display = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`
 
   return (
-    <div className={`timer ${seconds === 0 ? 'timer-ended' : ''}`} aria-label="Seven minute interview timer">
+    <div className={`timer ${seconds === 0 ? 'timer-ended' : ''}`} aria-label="Interview timer">
       <output aria-live="polite">{display}</output>
       <div className="timer-controls">
         <button type="button" onClick={() => setRunning((value) => !value)}>
@@ -205,54 +344,58 @@ function readPositiveNumber(value: string) {
   return Number.isFinite(number) && number >= 0 ? number : 0
 }
 
-export function FermiCalculator() {
-  const [customers, setCustomers] = useState('')
-  const [annualSpend, setAnnualSpend] = useState('')
+export function MarketSizingCalculator() {
+  const [customers, setCustomers] = useState('2500')
+  const [annualSpend, setAnnualSpend] = useState('10000')
 
   const market = useMemo(
     () => readPositiveNumber(customers) * readPositiveNumber(annualSpend),
     [customers, annualSpend],
   )
 
-  const formattedMarket = market
-    ? new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-        maximumFractionDigits: 0,
-      }).format(market)
-    : '—'
+  const formattedMarket = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0,
+  }).format(market)
+
+  const marketStatus = market < 25_000_000
+    ? { className: 'market-below', label: 'below target' }
+    : market < 50_000_000
+      ? { className: 'market-near', label: 'near target' }
+      : { className: 'market-above', label: 'well above target' }
 
   return (
-    <div className="fermi-calculator">
+    <div className="market-sizing-calculator">
       <label>
-        <span>potential customers</span>
+        <span>customers</span>
         <input
-          aria-label="Potential customers"
+          aria-label="Customers"
           inputMode="numeric"
           min="0"
           onChange={(event) => setCustomers(event.target.value)}
-          placeholder="enter estimate"
+          placeholder="2,500"
           type="number"
           value={customers}
         />
       </label>
-      <span className="fermi-operator" aria-hidden="true">×</span>
+      <span className="market-sizing-operator" aria-hidden="true">×</span>
       <label>
-        <span>annual spend per customer</span>
+        <span>average annual contract</span>
         <input
-          aria-label="Annual spending per customer"
+          aria-label="Average annual contract value"
           inputMode="decimal"
           min="0"
           onChange={(event) => setAnnualSpend(event.target.value)}
-          placeholder="enter dollars"
+          placeholder="$10,000"
           type="number"
           value={annualSpend}
         />
       </label>
-      <span className="fermi-operator" aria-hidden="true">=</span>
-      <div className="fermi-result">
-        <span>reachable annual market</span>
-        <output aria-live="polite">{formattedMarket}</output>
+      <span className="market-sizing-operator" aria-hidden="true">=</span>
+      <div className={`market-sizing-result ${marketStatus.className}`}>
+        <span>annual market · {marketStatus.label}</span>
+        <output aria-label={`${formattedMarket}, ${marketStatus.label}`} aria-live="polite">{formattedMarket}</output>
       </div>
     </div>
   )

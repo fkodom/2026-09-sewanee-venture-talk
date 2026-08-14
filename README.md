@@ -1,4 +1,4 @@
-# How Nine Failures Make a Fund
+# The Math of Venture Capital
 
 An interactive, browser-based presentation about power laws, expected value, and the mathematics of venture capital, created for a public talk at Sewanee in 2026.
 
@@ -8,12 +8,13 @@ The complete narrative and research notes live in [`docs/venture-capital-talk-pl
 
 ## Status
 
-The complete narrative is implemented as 29 slides and follows the written talk plan. The plan contains 26 narrative beats; each coin game uses a separate setup and distribution slide so the audience can understand the rules before seeing the result. The deck also includes speaker notes, venture evidence, the personal timeline, a live discovery exercise, a seven-minute timer, a bottom-up market calculator, valuation, and the conclusion.
+The complete narrative is implemented as 36 slides. The deck adds a title slide and speaker background, gives each coin game separate setup and distribution slides, adds builder-principles, pain, truth, and speed slides, and omits the plan's standalone power-law derivation. It also includes speaker notes, venture evidence, a live discovery exercise, a five-minute timer, and a five-slide early-stage valuation sequence.
 
-- Content implementation is `29 / 29` for a 45–50 minute talk, followed by questions.
+- Content implementation is `36 / 36` for a 45–50 minute talk, followed by questions.
 - The opening and mathematical examples preserve the plan's stated caveats and indexing conventions.
-- Game 2 and Game 3 reuse locally bundled figures from [On Power Laws](https://fkodom.com/blog/on-power-laws). Game 1 is redrawn in the same visual language because the article uses a different payoff convention.
+- All three coin games reuse locally bundled figures from [On Power Laws](https://fkodom.com/blog/on-power-laws).
 - The live discovery and market-sizing slides use local React state and work without a network connection.
+- The Josh Kopelman tweet is an official X embed and requires a network connection.
 - Research figures remain working estimates and must be refreshed, dated, and sourced shortly before the talk.
 - Rehearsal edits, current data, and any event-specific participant details remain presentation-preparation work.
 
@@ -112,39 +113,46 @@ The intended progression is:
 
 > Paradox → mathematical model → empirical evidence → investor implications → company discovery → valuation → human conclusion
 
-The personal story appears only after the mathematical model and evidence. That ordering keeps the talk focused on the audience's central question before establishing the speaker's perspective as both an investor and company builder.
+A brief speaker background follows the title. The investor-and-builder framework still appears only after the mathematical model and evidence, keeping the central question ahead of the longer company-building section.
 
 ## Slide sequence
 
-1. Most startups fail.
-2. The S&P 500 already sets a high bar.
-3. Venture has to clear a higher bar.
-4. Three coin-flipping games.
-5. Game 1: additive outcomes — setup.
-6. Additive outcomes cluster around an average.
-7. Game 2: multiplicative outcomes — setup.
-8. The mean stays at $1. The typical outcome does not.
-9. Game 3: multiplication with elimination — setup.
-10. Rare extremes remain economically important.
-11. Deriving the power law.
-12. Venture capital looks much more like Game 3.
-13. Advance with evidence, or the game ends.
-14. Every rung filters companies and reprices survivors.
-15. A few investments can determine the portfolio.
-16. Could this company return the fund?
-17. Growth mechanics and capital allocation reinforce one another.
-18. Choose the path that leaves more paths open.
-19. Evaluate companies. Build them.
-20. Match the capital to the engine.
-21. The portfolio sets the scale of the opportunity.
-22. Each round buys growth—and information.
-23. Win a narrow market. Then expand.
-24. Past behavior beats future promises.
-25. Follow the evidence.
-26. How many customers, spending how much?
-27. Expected terminal value is a starting point.
-28. The useful deal leaves room for both sides to win.
-29. What the mathematics cannot answer.
+1. The Math of Venture Capital.
+2. My background.
+3. Most startups fail.
+4. The S&P 500.
+5. Venture must outperform.
+6. Three coin games.
+7. Game 1: additive.
+8. Normal distribution.
+9. Game 2: multiplicative.
+10. Log-normal distribution.
+11. Game 3: elimination.
+12. Pareto distribution (Power law).
+13. Venture resembles Game 3.
+14. What's in a venture investment?
+15. Capital for equity.
+16. Advance or stop.
+17. A round buys time.
+18. A round buys information.
+19. The funding ladder.
+20. Power laws.
+21. Dilution.
+22. A round buys fuel.
+23. Buy vs. Build.
+24. So you want to build a startup?
+25. Seek pain.
+26. Past behavior beats promises.
+27. Seek truth.
+28. Move fast.
+29. Start narrow.
+30. The Mom Test.
+31. How much is an idea worth?
+32. Start with runway.
+33. The valuation floor.
+34. Will VCs believe it?
+35. Market size.
+36. Most startups fail. Most are still worthwhile.
 
 ## Design system
 
@@ -188,8 +196,8 @@ The implemented deck is organized by narrative section:
 │   └── on-power-laws/             # locally bundled article figures used by the game slides
 ├── src/
 │   ├── components/deck/
-│   │   ├── SlideFrame.tsx         # shared frame, numbering, and source line
-│   │   └── Visuals.tsx            # charts, coins, timer, and Fermi calculator
+│   │   ├── SlideFrame.tsx         # shared frame and source line
+│   │   └── Visuals.tsx            # charts, coins, timer, and market-sizing calculator
 │   ├── data/
 │   │   └── venture-data.ts        # shared figures, labels, and slide metadata
 │   ├── slides/
@@ -268,13 +276,16 @@ There is no server-rendering requirement. The deck should remain a self-containe
 Several examples are intentionally simplified, but they must remain precise:
 
 - The opening treats 9% as a Rule of 72 teaching assumption, so an index investment roughly doubles in eight years. It is an average, not a forecast for any particular period.
+- The S&P 500 history chart uses annual average price data, excludes dividends, and treats 2026 as year-to-date.
 - The venture hurdle of at least 3× over roughly eight years is this talk's benchmark, not an industry-wide promise. Compare index and venture returns on the same net-or-gross basis.
+- The additive game uses `+$1 / +$0` flips, so its expected payout after 100 flips is $50.
 - The multiplicative coin game uses `1.1` and `0.9`; a double-or-halve game has a different expected multiplier.
 - The St. Petersburg example illustrates a heavy tail. It is not a claim that real markets contain infinite money.
 - The power law is most precisely expressed as a survival distribution, `P(X ≥ x)`.
 - Startup stages resemble elimination rounds structurally, but companies are not literal independent coin flips.
 - The defensible causation claim is that startup growth mechanics and staged capital allocation reinforce one another.
-- `5% × $500M = $25M` is simplified expected terminal value, not a present-day valuation.
+- The `$500k ÷ 20% = $2.5M` valuation is an illustrative financing constraint, not a current market benchmark.
+- The `$25M / year` market target is an example, not a universal venture threshold.
 - A good business need not be venture-backable; the financing must match the growth mechanics.
 
 See the plan's **Mathematical and factual cautions** section before editing equations, return examples, market statistics, or valuation slides.
@@ -284,6 +295,7 @@ See the plan's **Mathematical and factual cautions** section before editing equa
 The working source list includes:
 
 - Investor.gov, [What is compound interest?](https://www.investor.gov/additional-resources/information/youth/teachers-classroom-resources/what-compound-interest)
+- Macrotrends, [S&P 500 — 100 Year Historical Chart & Data](https://www.macrotrends.net/datasets/2324/sp-500-historical-chart-data)
 - Frank Odom, [On Power Laws](https://fkodom.com/blog/on-power-laws)
 - Paul Graham, [Black Swan Farming](https://paulgraham.com/swan.html)
 - Peter Thiel with Blake Masters, *Zero to One*
@@ -303,7 +315,7 @@ bun run lint
 bun run build
 ```
 
-Then inspect changed slides in the browser at minimum:
+Use browser QA when the user requests it, reports a layout problem, or a change depends on browser-only behavior. In those cases, inspect the affected slides at the relevant sizes, which may include:
 
 - At the 1440 × 810 reference ratio
 - At a normal laptop viewport
@@ -311,6 +323,6 @@ Then inspect changed slides in the browser at minimum:
 - In overview mode if the slide uses an unusual background or layout
 - In print/PDF mode when changing fragments, equations, charts, or edge-aligned content
 
-Check that text is not clipped, visual order matches spoken order, charts remain legible, slide numbering is consistent, keyboard navigation works, and the deck does not depend on network access for critical assets.
+Do not replay the full deck after routine copy or CSS edits. For targeted browser QA, check that text is not clipped, visual order matches spoken order, charts remain legible, reveal.js numbering is visible, keyboard navigation works, and the deck does not depend on network access for critical assets.
 
 Shared implementation guidance for coding agents is in [`AGENTS.md`](AGENTS.md). [`CLAUDE.md`](CLAUDE.md) imports it for Claude Code rather than duplicating those instructions.
