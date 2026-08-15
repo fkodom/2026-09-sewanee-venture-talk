@@ -28,7 +28,7 @@ export function PartFiveConclusion() {
             <h2>Start with runway.</h2>
             <div className="round-budget-grid">
               <article>
-                <strong>you + 2–3</strong>
+                <strong>you + 2–3 employees</strong>
                 <span>people</span>
               </article>
               <article>
@@ -36,11 +36,11 @@ export function PartFiveConclusion() {
                 <span>runway</span>
               </article>
               <article className="round-budget-operations">
-                <strong>computers, hosting, software, space</strong>
+                <strong>computers, hosting, software, office space (?)</strong>
                 <span>operations</span>
               </article>
               <article>
-                <strong>$0</strong>
+                <strong>$0 ARR</strong>
                 <span>revenue</span>
               </article>
             </div>
