@@ -1983,32 +1983,6 @@ input:focus-visible {
   line-height: 1.35;
 }
 
-/* 13 — financing fit */
-
-.financing-fit-slide {
-  padding-top: 0;
-}
-
-.tweet-embed-shell {
-  width: 680px;
-  margin: 0 auto;
-  background: transparent;
-}
-
-.tweet-embed-target {
-  display: flex;
-  width: 100%;
-  min-height: 430px;
-  align-items: center;
-  justify-content: center;
-}
-
-.tweet-embed-target > iframe {
-  display: block !important;
-  max-width: 680px !important;
-  margin: 0 auto !important;
-}
-
 /* 18 — Bayesian evidence */
 
 .bayesian-heading {

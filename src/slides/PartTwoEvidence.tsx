@@ -1,5 +1,4 @@
 import { Slide } from '@revealjs/react'
-import { useEffect, useRef } from 'react'
 
 import { SlideFrame, SourceLine } from '../components/deck/SlideFrame'
 import { DilutionSimulator } from '../components/deck/Visuals'
@@ -99,70 +98,6 @@ function PowerLawPortfolioChart() {
       </svg>
     </figure>
   )
-}
-
-type TwitterWidgets = {
-  createTweet: (
-    tweetId: string,
-    target: HTMLElement,
-    options: {
-      align: 'center'
-      cards: 'hidden'
-      conversation: 'none'
-      dnt: boolean
-      theme: 'light'
-    },
-  ) => Promise<HTMLElement | undefined>
-}
-
-declare global {
-  interface Window {
-    twttr?: { widgets: TwitterWidgets }
-  }
-}
-
-function TweetEmbed() {
-  const targetRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const target = targetRef.current
-    if (!target) return
-
-    let cancelled = false
-
-    const renderTweet = async () => {
-      if (cancelled || !window.twttr?.widgets) return
-      target.replaceChildren()
-      await window.twttr.widgets.createTweet('1083755402037219334', target, {
-        align: 'center',
-        cards: 'hidden',
-        conversation: 'none',
-        dnt: true,
-        theme: 'light',
-      })
-    }
-
-    let script = document.getElementById('twitter-wjs') as HTMLScriptElement | null
-    if (window.twttr?.widgets) {
-      void renderTweet()
-    } else {
-      if (!script) {
-        script = document.createElement('script')
-        script.id = 'twitter-wjs'
-        script.src = 'https://platform.twitter.com/widgets.js'
-        script.async = true
-        document.body.appendChild(script)
-      }
-      script.addEventListener('load', renderTweet)
-    }
-
-    return () => {
-      cancelled = true
-      script?.removeEventListener('load', renderTweet)
-    }
-  }, [])
-
-  return <div className="tweet-embed-target" ref={targetRef} />
 }
 
 export function PartTwoEvidence() {
@@ -339,20 +274,6 @@ export function PartTwoEvidence() {
           <div className="dilution-slide">
             <h2>Dilution</h2>
             <DilutionSimulator />
-          </div>
-        </SlideFrame>
-      </Slide>
-
-      <Slide
-        backgroundColor="#f6eddb"
-        className="deck-slide"
-        notes={`Josh Kopelman's analogy distinguishes businesses by the kind of capital their growth mechanics can use. Venture capital is designed for the rare company that can turn aggressive reinvestment into exceptional scale. It can damage a sound but non-venture business by imposing the wrong growth expectations. The embedded post is the original January 11, 2019 tweet and requires a network connection to load from X.`}
-      >
-        <SlideFrame>
-          <div className="financing-fit-slide">
-            <div className="tweet-embed-shell">
-              <TweetEmbed />
-            </div>
           </div>
         </SlideFrame>
       </Slide>
