@@ -1583,160 +1583,227 @@ input:focus-visible {
   color: var(--tail);
 }
 
-/* 22 — startup principles */
+/* 22 — discovery bridge */
 
-.startup-principles-slide {
+.discovery-bridge-slide {
   display: flex;
   flex: 1;
   flex-direction: column;
   justify-content: center;
-  padding-top: 18px;
+  padding: 0 26px 26px;
 }
 
-.startup-principles-slide h2 {
-  max-width: 1050px;
-  font-size: 70px;
+.discovery-bridge-slide h2 {
+  max-width: 1180px;
+  font-size: 94px;
+  line-height: 0.92;
 }
 
-.case-study-label {
-  margin: 38px 0 0;
-  color: var(--muted);
-  font-family: var(--font-sans);
-  font-size: var(--deck-bullet-size);
-  line-height: 1.25;
-}
-
-.airbnb-principles-table {
-  width: 100%;
-  margin-top: 28px;
-  border-top: 1px solid var(--ink);
-  border-collapse: collapse;
-  table-layout: fixed;
-}
-
-.airbnb-principles-table th,
-.airbnb-principles-table td {
-  padding: 0 16px;
-  text-align: left;
-}
-
-.airbnb-principles-table thead th {
-  height: 35px;
-  color: var(--muted);
-  font-family: var(--font-mono);
-  font-size: 9px;
-  font-weight: 400;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.airbnb-principles-table tbody th {
-  height: 58px;
-  border-top: 1px solid var(--rule);
-  width: 32%;
-  color: var(--tail);
+.discovery-bridge-slide p {
+  margin: 34px 0 0;
+  color: #e16e61;
   font-family: var(--font-display);
-  font-size: 28px;
-  font-weight: 400;
-}
-
-.airbnb-principles-table tbody td {
-  height: 58px;
-  border-top: 1px solid var(--rule);
-  color: var(--ink);
-  font-family: var(--font-display);
-  font-size: 25px;
-}
-
-.airbnb-principles-table tbody th strong {
-  font-weight: 700;
-}
-
-/* 23 — seek pain */
-
-.seek-pain-slide {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  justify-content: center;
-  padding-top: 18px;
-}
-
-.seek-pain-slide h2 {
-  font-size: 74px;
-}
-
-.seek-pain-composition {
-  display: grid;
-  grid-template-columns: 0.82fr 1.18fr;
-  align-items: stretch;
-  gap: 34px;
-  margin-top: 62px;
-}
-
-.seek-pain-composition blockquote {
-  display: flex;
-  min-height: 285px;
-  flex-direction: column;
-  justify-content: center;
-  margin: 0;
-  padding: 34px 36px;
-  border: 1px solid var(--ink);
-  font-family: var(--font-display);
-  font-style: normal;
-  line-height: 0.95;
-}
-
-.seek-pain-composition blockquote span,
-.seek-pain-composition blockquote strong {
-  display: block;
   font-size: 48px;
-  font-weight: 400;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.04em;
+  line-height: 1;
 }
 
-.seek-pain-composition blockquote span {
-  color: var(--ink);
-}
+/* 23 — startup ideation */
 
-.seek-pain-composition blockquote strong {
-  margin-top: 9px;
-  color: var(--tail);
-}
-
-.seek-pain-example {
+.startup-ideation-slide {
   display: flex;
-  min-height: 285px;
+  flex: 1;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 28px;
+  justify-content: center;
+  padding-top: 12px;
+}
+
+.startup-ideation-slide h2 {
+  font-size: 68px;
+}
+
+.startup-ideation-triangle {
+  width: 100%;
+  height: 530px;
+  margin-top: 8px;
+  overflow: visible;
+}
+
+.startup-ideation-label {
+  fill: var(--ink);
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+}
+
+.startup-ideation-circle {
+  fill: var(--tail);
+  fill-opacity: 0.045;
+  stroke: var(--ink);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+/* 24 — startup bets */
+
+.startup-bets-slide {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 14px;
+}
+
+.startup-bets-slide h2 {
+  font-size: 72px;
+}
+
+.startup-bets-track {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-top: 92px;
+  padding: 26px 0 0;
+  list-style: none;
+}
+
+.startup-bet-stop {
+  min-width: 0;
+  min-height: 190px;
+  padding-right: 48px;
+}
+
+.startup-bet-stop:last-child {
+  padding-right: 0;
+}
+
+.startup-bet-stop strong {
+  max-width: 245px;
+  font-size: 31px;
+  letter-spacing: -0.025em;
+  line-height: 1.04;
+}
+
+.startup-bets-stage-map {
+  position: absolute;
+  right: 0;
+  bottom: 18px;
+  left: 0;
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, 38px);
+  gap: 10px 0;
   margin: 0;
-  padding: 34px 38px;
-  border: 1px solid var(--tail);
+  padding: 0;
+  list-style: none;
+}
+
+.startup-bets-stage-map li {
+  min-width: 0;
+}
+
+.startup-bets-stage-map li:nth-child(1) {
+  grid-column: 1 / span 2;
+  grid-row: 1;
+}
+
+.startup-bets-stage-map li:nth-child(2) {
+  grid-column: 2 / span 2;
+  grid-row: 2;
+}
+
+.startup-bets-stage-map li:nth-child(3) {
+  grid-column: 3 / span 2;
+  grid-row: 3;
+}
+
+.startup-bets-stage-map span {
+  display: block;
+  width: 100%;
+  height: 7px;
   background: var(--tail);
 }
 
-.seek-pain-example span {
-  color: rgba(255, 249, 238, 0.72);
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.startup-bets-stage-map strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  text-align: center;
 }
 
-.seek-pain-example strong {
-  max-width: 620px;
-  color: var(--paper-bright);
-  font-family: var(--font-display);
-  font-size: 52px;
-  font-weight: 400;
-  letter-spacing: -0.04em;
-  line-height: 0.98;
+.startup-bets-probability-equation {
+  position: absolute;
+  right: 0;
+  bottom: 54px;
+  left: 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 18px;
+  color: var(--ink);
+  font-family: var(--font-math);
+  font-size: 30px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.startup-bets-probability-equation span:first-child {
+  color: var(--tail);
+}
+
+.startup-bets-probability-equation i {
+  color: var(--muted);
+  font-style: normal;
+}
+
+/* 25 — Airbnb demand */
+
+.airbnb-demand-slide {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 18px;
+}
+
+.airbnb-demand-slide h2 {
+  font-size: 74px;
+}
+
+.airbnb-demand-track {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-top: 92px;
+}
+
+.airbnb-demand-stop {
+  min-width: 0;
+  min-height: 190px;
+  padding-right: 46px;
+}
+
+.airbnb-demand-stop:last-child {
+  padding-right: 0;
+}
+
+.airbnb-demand-stop strong {
+  max-width: 245px;
+  font-size: 29px;
+  letter-spacing: -0.025em;
+  line-height: 1.04;
 }
 
 /* 25 — seek truth */
 
 .seek-truth-slide {
+  position: relative;
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -2195,6 +2262,28 @@ input:focus-visible {
   border-top: 1px solid rgba(185, 52, 44, 0.2);
   color: var(--ink);
   font-size: 18px;
+}
+
+.mom-test-book-plug {
+  position: relative;
+  display: flex;
+  height: 260px;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  overflow: visible;
+}
+
+.mom-test-book-plug img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: 100%;
+  max-width: 330px;
+  height: 310px;
+  object-fit: contain;
+  transform: translate(-50%, -50%);
 }
 
 /* 21 — live discovery */
