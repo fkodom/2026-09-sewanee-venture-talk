@@ -2,6 +2,14 @@
 
 ## A working plan for a public talk on the mathematics of venture capital
 
+### September 7 implementation update
+
+The working deck has 32 active slides, with “Dilution” preserved but hidden. The outline below records the narrative beats, which can span several slides; the current slide sequence is in the README and the 33:00 rehearsal budget is in [speaker-guide.md](speaker-guide.md).
+
+“Who cares?” leads into one startup-bet slide that combines the claims and probability equation, followed directly by the Airbnb case study. “Build a wedge” follows Airbnb immediately. The user removed “What's the pain?” and its book reveal, “Move fast & update priors,” the live “The Mom Test” slide, “What did we learn?”, “Market size” and the separate financing-fit bridge. The incumbent slide is titled “Why won't company X build that?” and focuses only on Google LaMDA and OpenAI ChatGPT. The ending keeps the original financing example and closing statement, with simpler layouts and qualifications in speaker notes.
+
+The stage-by-stage graduation/valuation table is retained. The user removed the separate seed bottleneck slide on September 9. It uses dated historical sources, identified separately: Mattermark’s 2009 seed cohort observed in 2016 and Carta’s Q4 2024 stage valuations. The table motivates Game 3’s elimination and multiplicative-payoff structure; it is not a matched longitudinal price series or a power-law fit. The previous corrections to Game 3’s $2 minimum payout and Horsley Bridge’s 4.5% of invested dollars / 60% of returns remain. See the speaker guide for sources, probability qualifications and the S&P refresh limitation.
+
 ### Possible titles
 
 - **The Math of Venture Capital**
@@ -256,9 +264,9 @@ Use the original decision tree on the setup slide and the log-normal simulation 
 
 Use a version of the St. Petersburg game:
 
-- The payout doubles with each successive heads.
-- The first tails ends the game.
-- Reaching a payout of \(2^n\) has probability proportional to \(2^{-n}\).
+- Start at $1. Double before each flip; heads continues and tails collects and stops.
+- Immediate tails pays $2. First tails on flip n pays 2^n, with probability 2^(−n), n≥1.
+- The survival probability at possible payouts is P(X≥2^n)=2^(1−n).
 
 #### Mathematics
 
@@ -278,7 +286,7 @@ Keep this qualification in the spoken explanation or speaker notes. Do not place
 
 #### Visual
 
-A tightly cropped decision tree showing repeated doubling and elimination, followed by the original heavy-tailed outcome plot on a separate slide. Do not place a tail equation or explanatory sidebar beside the plot.
+A tightly cropped decision tree showing repeated doubling and elimination, followed by a local SVG survival plot on a separate slide. The latter recreates 10,000 trials with a fixed seed and the same payout convention. The original raster distribution starts at $1 and does not match the tree. Do not place a tail equation or explanatory sidebar beside the plot.
 
 ---
 
@@ -379,36 +387,23 @@ At the earliest stage, qualitative priors dominate because meaningful quantitati
 
 ---
 
-### Slide 16 — Funding ladder
+### Slide 16 — The funding ladder
 
-Show an approximate progression:
+Restore the stage-by-stage table. This is the empirical link back to Game 3: fewer companies reach each successive stage while valuations at later stages are larger. Keep both columns visible together.
 
-```text
-Pre-seed → Seed → Series A → Series B → Series C → Exit/IPO
-```
-
-For each transition, show:
-
-- Approximate graduation probability
-- Approximate valuation at the next stage
-
-The figures and sources are in the article [On Power Laws](https://fkodom.com/blog/on-power-laws):
-
-| Transition | Approximate graduation rate | Approximate next-stage valuation |
+| Stage / transition | Advance | Next valuation |
 | --- | ---: | ---: |
-| Pre-seed → Seed | 67% | $12–15M |
-| Seed → Series A | 33% | $40–45M |
-| Series A → Series B | 65% | $50–105M |
-| Series B → Series C | 75% | $100–250M |
-| Series C → Series D | 80%+ | $500M+ |
+| Seed | start | ≈$16M |
+| Seed → Series A | ≈32% | ≈$43M |
+| Series A → B | ≈66% | ≈$110M |
+| Series B → C | ≈59% | ≈$220M |
+| Series C → D | ≈41% | ≈$420M |
 
-#### Main observation
+The graduation column uses the 2009 U.S. software seed cohort in Jason D. Rowley’s [Mattermark analysis](https://mattermark.com/startup-graduation-rate-surprisingly-low/), September 28, 2016. Its cumulative shares reaching A/B/C/D are 32%/21%/12.3%/5%; divide adjacent percentages to obtain conditional graduation rates. The source has no pre-seed graduation observation, so begin at seed.
 
-The seed-to-Series-A transition has historically been an especially narrow bottleneck and a large valuation jump. Venture is messier than the fair-coin model, but it displays the same qualitative structure.
+The valuation column uses [Carta’s Q4 2024 report](https://carta.com/data/state-of-private-markets-q4-2024/), published February 12, 2025: median U.S. pre-money valuations, primary and bridge rounds combined, rounded to two significant figures. These are **separate companies and periods**, not successive valuations of the graduation cohort. State both source dates on the slide. The table motivates the analogy; it does not establish an exact power law or an investor’s return.
 
-#### Source note
-
-The article cites the PitchBook–NVCA Venture Monitor and CB Insights State of Venture for round sizes and valuations, and Carta's State of Private Markets for graduation rates. Round sizes and graduation rates vary with market conditions, dataset definitions, cohort age, and measurement window.
+Move directly to “Power laws.” Graduation is not business survival: companies may stop raising because they close, are acquired, become self-sustaining, or take longer.
 
 ---
 
@@ -417,12 +412,12 @@ The article cites the PitchBook–NVCA Venture Monitor and CB Insights State of 
 Use two large, readable bullets to show that venture outcomes are actually concentrated:
 
 - In Paul Graham's 2012 analysis of Y Combinator, Airbnb and Dropbox represented roughly three-quarters of the portfolio's value.
-- Horsley Bridge found that approximately 5% of capital deployed from 1985–2014 generated half of all returns.
+- Chris Dixon’s June 8, 2015 report of Horsley Bridge data states that approximately 4.5% of invested dollars generated 60% of total returns. This is historical pooled fund data, not a universal rate.
 - A large majority of individual venture investments return less than the capital invested.
 
 #### Visual
 
-Model the chart after the ranked-return graphic in *Zero to One*. Order illustrative company returns from largest to smallest, with the biggest returner at the left. Use bars for the steep actual distribution and a dashed, flatter line for the distribution people often imagine. Label both directly.
+Model the chart after the ranked-return graphic in *Zero to One*. Order illustrative company returns from largest to smallest, with the biggest returner at the left. Use explicitly illustrative bars for the steep distribution and a dashed, flatter line for the distribution people often imagine. The vertical scale is common arbitrary dollar units, not return multiples of individual checks. Label both directly.
 
 Add a dotted line labeled “the fund” just below the second-largest bar. This is an illustrative scale marker, not an observed portfolio statistic, and replaces the standalone “Return the fund?” slide.
 
@@ -432,15 +427,15 @@ The average company is not a useful picture of the portfolio. The actual ranked 
 
 ---
 
-### Slide 18 — Dilution
+### Slide 18 — Dilution (temporarily hidden)
 
-Add an interactive cap-table experiment immediately after the power-law portfolio slide.
+The user has hidden this slide for now. Its full TSX, notes, simulator, model and styling remain intact. Set `SHOW_DILUTION_SLIDE` to `true` in `src/slides/PartTwoEvidence.tsx` to restore it immediately after the power-law portfolio slide. Keep the following model as preparation; it is not in the active running order.
 
 #### Model
 
 - Begin with 100 shares outstanding.
 - In each financing round, issue enough new shares for the latest round to own 20% of the post-money company. That means issuing 25 new shares for every 100 existing shares.
-- Assume 50% of companies survive between rounds, so the individual round sizes grow by 3×: $1M, $3M, $9M, then $27M. Cumulative funding is $1M, $4M, $13M, then $40M.
+- Separately assume 50% of companies survive between rounds and choose individual round sizes that grow by 3×; the first assumption does not imply the second: $1M, $3M, $9M, then $27M. Cumulative funding is $1M, $4M, $13M, then $40M.
 - Let the audience step through several rounds and watch the ownership of the first investor fall from 20% to 16%, then 12.8%, when it does not participate.
 - Add a pro-rata toggle. When it is on, earlier investors buy enough of each later round to maintain their ownership; the latest round's 20% pool is then shared between follow-on and new capital.
 
@@ -450,15 +445,9 @@ Keep the slide visual. The point is the share issuance and ownership arithmetic;
 
 ---
 
-### Slide 19 — A round buys fuel
+### Original beat 19 — Removed standalone slide
 
-Show Josh Kopelman's January 11, 2019 post as the slide's only visible content:
-
-[Original post on X](https://x.com/joshk/status/1083755402037219334)
-
-Use the post to explain that venture capital is built for the rare company capable of turning aggressive reinvestment into exceptional scale. Do not add the previous three-card comparison of local services, acquisitions, and venture startups.
-
-Use X's auto-sizing widget with the linked article card hidden. The embed requires a network connection.
+The user removed “A good business needn’t be a venture business.” Move directly from “Power laws” to “Buy vs. build” while dilution is hidden. The distinction remains useful in answers and in the live exercise’s possible outcomes; do not restore it as a separate slide.
 
 ---
 
@@ -490,11 +479,11 @@ Establish why the remainder of the talk can move between the investor's and buil
 
 ## Part IV: From a problem to a venture-investable company
 
-### Slide 21 — So you want to build a startup?
+### Slide 21 — Where do you start? Then build the stack of bets
 
 Set up the builder's operating rules with three bullets:
 
-Label the slide “Case study: Airbnb” and show the rules beside the Airbnb example in a compact two-column table.
+Use the title “Where do you start?” The Airbnb example follows the startup-bet slide.
 
 - seek pain
 - seek truth
@@ -502,69 +491,23 @@ Label the slide “Case study: Airbnb” and show the rules beside the Airbnb ex
 
 Keep the slide spare. The presenter can explain that customer discovery should identify a real problem, test what is true, and move quickly enough to learn before committing too much time or capital.
 
-### Slide 22 — Seek pain
+### Slide 22 — Who cares?
 
-Stay with Airbnb and keep the slide sparse:
+Keep the overlapping circles: “The world changed.” and “Something hurts.” Look for changes in actual behavior, workarounds, spending or habits. The speaker supplies the explanation. This question now precedes the startup-bet slide.
 
-> **“Sell painkillers, not vitamins”**
->
-> **air mattresses for conference visitors**
+Follow with one slide titled “A startup is a stack of bets.” Keep the care → action → reach → growth track and add the approximate probability equation on the same slide. The user removed the financing-stage overlay on September 9 and the separate plain build on September 11.
 
-The point is to solve a problem people already feel, not to make an easy experience incrementally better. Look for existing workarounds, time or money already spent, and behavior that shows the pain is real.
+The approximation conditions each claim mainly on its predecessor. The full chain rule and the distinction between necessary claims and startup success belong in speaker preparation.
 
-### Slide 23 — Past behavior beats promises
+### Original beat 23 — Removed interview prompts
 
-Introduce the central lesson from *The Mom Test*: do not ask people to predict whether they would use an imagined product. Ask about concrete past behavior.
-
-#### Questions
-
-1. Tell me about the last time this happened.
-2. What made it difficult?
-3. What did you do about it?
-4. How much time, effort, or money did that cost?
-5. What alternatives have you tried?
-6. Who else experiences this problem?
-
-#### Strong evidence
-
-- The problem happens repeatedly.
-- The person has already created a workaround.
-- The workaround costs meaningful time or money.
-- The person has paid someone to make the problem disappear.
-- Other identifiable people or organizations share the problem.
+The user removed “What's the pain?” on September 13, including its *The Mom Test* title-and-author reveal. Go directly from the startup-bet slide to the Airbnb case study.
 
 ---
 
-### Slide 24 — Seek truth
+Follow with the Airbnb case study: a design conference, sold-out hotels, three airbeds, three guests. These observed stays illustrate demand; they do not by themselves prove a broad market. Use Airbnb’s own [origin account](https://news.airbnb.com/what-makes-airbnb-airbnb), published in 2020, for the 2007 sequence.
 
-Stay with Airbnb's early customer-learning loop:
-
-1. Talk with real users.
-2. Run rapid experiments.
-3. Iterate on the problems people actually have.
-
-Keep the slide visual and spare. The speaker can explain how each pass through the loop replaced an assumption with observed behavior.
-
----
-
-### Slide 25 — Move fast
-
-Open with the question founders hear repeatedly:
-
-> **“Why won’t company X build that?”**
-
-Do not confuse an incumbent's ability to build something with its willingness to ship it. Existing operations, incentives, and revenue streams can slow a company that has the technical resources to compete.
-
-Use two examples:
-
-- Airbnb moved against hotel chains and an existing rental marketplace, Vrbo.
-- Google publicly demonstrated LaMDA in May 2021, about eighteen months before OpenAI released ChatGPT in November 2022. Bard was the later product name. Present search-advertising disruption as a strategic complication, not a proven single motive for the timing.
-
-Sources: Google, “LaMDA: our breakthrough conversation technology,” May 18, 2021; OpenAI, “Introducing ChatGPT,” November 30, 2022; Associated Press, “Google has the next move as Microsoft embraces OpenAI buzz,” January 31, 2023.
-
----
-
-### Slide 26 — Start narrow
+### Build a wedge (original beat 26)
 
 #### Airbnb example
 
@@ -591,29 +534,27 @@ The objective is not to build today's Airbnb on day one. It is to win the smalle
 
 ---
 
-### Slide 27 — The Mom Test
+### Original beat 24 — Removed learning-loop callback
 
-Interview a known audience member about a domain such as sports betting or sports analytics.
+The user removed “Move fast & update priors” on September 11. Do not restore its talk-test-iterate loop or repeated probability equation.
 
-Show the cover of Rob Fitzpatrick's *The Mom Test* beside the live interview questions and timer. Do not add a separate “valid conclusions” panel; keep the possible outcomes in the speaker notes.
+---
 
-#### Goals
+### Slide 25 — Why won't company X build that?
 
-- Identify a concrete recent problem
-- Understand existing workarounds
-- Estimate frequency and pain
-- Find objective evidence of spending or effort
-- Determine whether other reachable customers have the same need
+Use the question as the title, without a separate “Move fast” heading or repeated quotation.
 
-#### Guardrails
+Show only the Google LaMDA / OpenAI ChatGPT example: Google demonstrated LaMDA in May 2021, while OpenAI launched ChatGPT in November 2022. Use a spare two-event timeline with dates, product names, and demo/launch labels. Do not include the Airbnb/Vrbo comparison here.
 
-- Ask the volunteer for consent in advance and agree on the domain, but do not plant answers.
-- Put a five-minute timer on the segment.
-- Keep the discovery questions visible on the slide.
-- Prepare a sports-data example that can serve as a rescue path.
-- Treat “this is not a good startup opportunity” as a valid result.
+An incumbent’s ability to build something does not guarantee that it will ship first. Google’s 2021 post discussed safety and quality concerns. The dates illustrate different product timelines; they do not prove a single cause for the timing or compare identical products.
 
-The exercise succeeds if it demonstrates disciplined belief updating, not only if it produces an exciting idea.
+Sources: Google, [LaMDA: our breakthrough conversation technology](https://blog.google/innovation-and-ai/products/lamda/), May 18, 2021; OpenAI, [Introducing ChatGPT](https://openai.com/index/chatgpt/), November 30, 2022.
+
+---
+
+### Original beat 27 — Removed live exercise and debrief
+
+The user removed the standalone “The Mom Test” live exercise and “What did we learn?” slides, then removed the remaining “What's the pain?” slide and its book reveal. Move from the LaMDA/ChatGPT example directly to the valuation section; do not schedule a volunteer or restore the timer or debrief.
 
 ---
 
@@ -646,7 +587,7 @@ This is back-of-the-napkin arithmetic, not a current market benchmark. The exact
 
 ### Slide 30 — The valuation floor
 
-Early rounds often sell roughly 15–20% of the company. Use 20% for the arithmetic:
+Use the example’s 20% dilution ceiling for the arithmetic:
 
 \[
 \text{post-money valuation}
@@ -656,7 +597,7 @@ Early rounds often sell roughly 15–20% of the company. Use 20% for the arithme
 \$2.5\text{M}
 \]
 
-The company needs at least $500,000 and does not want to sell much more than 20%, so the implied post-money valuation is at least $2.5 million.
+The company needs at least $500,000 and sets a dilution ceiling of 20%, so the minimum post-money price compatible with the financing plan is $2.5 million. This is not an intrinsic value floor; an investor can decline, and the plan may need to change.
 
 A higher valuation could let the founder raise more money or sell less ownership. Taking materially less cash shortens the runway; selling materially more equity makes later dilution harder. The result is a financing constraint for this example, not a claim that every idea is worth $2.5 million.
 
@@ -669,54 +610,26 @@ The decision rests on two beliefs:
 - The market has a credible path to enough scale, with room for a 10–100× outcome over time.
 - The founder can make a convincing case that this team can reach it.
 
-Use this slide to introduce the two-part investment test. The next slide puts numbers on the market claim.
+Use this slide to introduce the two-part investment test, then return directly to the closing statement.
+
+Use a line with three points, matching the startup-bet slide. Keep only the title and the labels “big enough market,” “you can build it,” and “$500k.” The user replaced the $25M annual-market label on September 13. Keep the round's illustrative nature and the conditional investment decision in the speaker notes.
 
 If both claims hold, a venture investor might fund the $500,000 round at the implied valuation. “Might” matters: this model explains the logic of a possible investment, not a guaranteed term sheet.
 
 ---
 
-### Slide 32 — Market size
+### Original beat 32 — Removed market-size slide
 
-Now ask whether an investor can believe that valuation. The first test is a bottom-up market calculation:
-
-\[
-\text{customers}
-\times
-\text{average annual contract}
-=
-\text{annual market}
-\]
-
-For example:
-
-\[
-2{,}500\times\$10{,}000=\$25\text{M per year}
-\]
-
-The same $25 million target could come from 12,500 customers paying $2,000 per year or 500 customers paying $50,000 per year. Challenge each input:
-
-- Would a lower price attract substantially more customers?
-- Would a meaningful subset pay for a premium product?
-- Could the company expand into adjacent markets?
-
-The simple formula hides difficult modeling choices. The target is illustrative, not a universal venture threshold.
-
-Color the calculated annual market against the example's $25 million requirement:
-
-- Below $25 million: red
-- $25 million to under $50 million: black
-- $50 million or more: green
-
-Include a text status with the color so the threshold is not communicated by color alone.
+The user removed the standalone market-size calculator slide and later replaced the $25M annual-market label with “big enough market” on “Will VCs believe it?” Do not restore the calculator or promise a following market-sizing demonstration.
 
 ---
 
-### Slide 33 — Most startups fail. Most are still worthwhile.
+### Slide 33 — Most startups fail. Most are worthwhile.
 
 End on a dark slide with only this two-line statement:
 
 > Most startups fail.
-> Most are still worthwhile.
+> Most are worthwhile.
 
 Do not add supporting copy, labels, or a concluding diagram. Pause before questions.
 
@@ -736,7 +649,7 @@ The following topics are interesting but should not interrupt the main narrative
 - Bridge rounds and down rounds
 - The Stripe/Thrive Capital example
 - Cloudflare's market share
-- Exact Series C and Series D round statistics
+- Detailed Series C and Series D methodology beyond the funding table
 - Detailed software revenue multiples
 - The distinction between TVPI, DPI, gross returns, and net returns
 
@@ -763,7 +676,7 @@ It therefore does not preserve expected value and complicates the intended compa
 
 ## The St. Petersburg game
 
-Specify the indexing convention carefully. The cleanest spoken version is that the payout doubles with each successive heads and the first tails terminates the game. Focus on the fact that probability decays at approximately the inverse rate that the payout grows.
+Specify the indexing convention carefully. The deck starts at $1 and doubles before each flip; heads continues and tails collects and stops. Immediate tails pays $2. At x=2^n, n≥1, the survival probability is 2/x. The original raster distribution used a different starting payout and has been replaced with a reproducible SVG chart. Focus on the fact that probability decays at approximately the inverse rate that the payout grows.
 
 For mathematical precision, describe the power law using the survival or tail distribution \(P(X\ge x)\), because the game has discrete payouts at powers of two rather than a continuous probability density over every possible dollar value.
 
@@ -791,8 +704,8 @@ Do not claim that the funding schedule alone proves or creates a power law. The 
 - Paul Graham, [Black Swan Farming](https://paulgraham.com/swan.html)
 - Peter Thiel with Blake Masters, *Zero to One*
 - Rob Fitzpatrick, *The Mom Test*
-- PitchBook–NVCA Venture Monitor
-- CB Insights, State of Venture
-- Carta, State of Private Markets
+- Jason D. Rowley, Mattermark, [The Startup Graduation Rate Is Surprisingly Low](https://mattermark.com/startup-graduation-rate-surprisingly-low/), September 28, 2016
+- Ashley Neville and Kevin Dowd, Carta, [State of Private Markets: Q4 and 2024 in review](https://carta.com/data/state-of-private-markets-q4-2024/), February 12, 2025
+- Peter Walker, Carta, [Graduation rate from seed to Series A](https://carta.com/data/newsletter-graduation-rate-from-seed-to-series-a/), February 5, 2025
 
 Before presenting, confirm that every numeric claim uses a clearly identified source, cohort, and measurement period.

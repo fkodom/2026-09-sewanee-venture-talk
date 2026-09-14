@@ -1,3 +1,12 @@
+// Source series supplied with the repository, first committed August 14, 2026.
+// The provider's precise YTD cutoff was not recorded. This is not a live feed.
+export const sp500Source = {
+  url: 'https://www.macrotrends.net/datasets/2324/sp-500-historical-chart-data',
+  bundled: '2026-08-14',
+  measurementCutoff: null,
+  refreshAttempted: '2026-09-04',
+} as const
+
 const rawAnnualAverages = `
 2026,7116.10
 2025,6216.87

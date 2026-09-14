@@ -1,5 +1,7 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useState } from 'react'
 
+import { buildDilutionSnapshot, roundFundingMultiple } from '../../data/dilution-model'
+import { compactDollars } from '../../data/venture-models'
 import { sp500AnnualAverages } from '../../data/sp500-annual-average'
 
 type DistributionKind = 'normal' | 'lognormal' | 'power'
@@ -72,7 +74,7 @@ export function Sp500HistoryChart() {
 
   return (
     <figure className="sp500-history-chart">
-      <figcaption><span>Annual average price</span><span>log scale</span></figcaption>
+      <figcaption><span>Annual average · index points</span><span>log scale</span></figcaption>
       <svg
         viewBox={`0 0 ${width} ${height}`}
         role="img"
@@ -83,7 +85,7 @@ export function Sp500HistoryChart() {
           <g className="sp500-price-tick" key={tick}>
             <line x1={plot.left} x2={width - plot.right} y1={y(tick)} y2={y(tick)} />
             <text x={plot.left - 14} y={y(tick) + 5} textAnchor="end">
-              {tick >= 1000 ? `$${tick / 1000}k` : `$${tick}`}
+              {tick >= 1000 ? `${tick / 1000}k` : tick}
             </text>
           </g>
         ))}
@@ -101,72 +103,14 @@ export function Sp500HistoryChart() {
         <circle className="sp500-latest-dot" cx={x(latest.year)} cy={y(latest.average)} r="6" />
         <g className="sp500-latest-label">
           <text x={x(latest.year) - 14} y={y(latest.average) - 18} textAnchor="end">{latest.year} YTD</text>
-          <text x={x(latest.year) - 14} y={y(latest.average) + 3} textAnchor="end">${latestPrice}</text>
+          <text x={x(latest.year) - 14} y={y(latest.average) + 3} textAnchor="end">{latestPrice}</text>
         </g>
       </svg>
     </figure>
   )
 }
 
-type DilutionHolding = {
-  label: string
-  round: number
-  shares: number
-  kind: 'founder' | 'initial' | 'prior' | 'latest'
-}
-
-type DilutionSnapshot = {
-  holdings: DilutionHolding[]
-  totalShares: number
-}
-
 const dilutionRoundOptions = [0, 1, 2, 3, 4]
-const roundFundingMultiple = 3
-
-function buildDilutionSnapshot(round: number, followOn: boolean): DilutionSnapshot {
-  let totalShares = 100
-  let previousTotalShares = 100
-  let issuedShares = 0
-  let newCapitalShares = 0
-  let followOnShares = 0
-  let holdings: DilutionHolding[] = [{ label: 'Founder', round: 0, shares: 100, kind: 'founder' }]
-
-  for (let index = 1; index <= round; index += 1) {
-    previousTotalShares = totalShares
-    issuedShares = totalShares * 0.25
-    totalShares += issuedShares
-    followOnShares = 0
-
-    if (followOn) {
-      holdings = holdings.map((holding) => {
-        if (holding.kind === 'founder') return holding
-        const targetShares = (holding.shares / previousTotalShares) * totalShares
-        followOnShares += targetShares - holding.shares
-        return { ...holding, shares: targetShares }
-      })
-    }
-
-    newCapitalShares = issuedShares - followOnShares
-    holdings = [
-      ...holdings,
-      { label: `Round ${index}`, round: index, shares: newCapitalShares, kind: 'latest' } satisfies DilutionHolding,
-    ].map((holding, holdingIndex, allHoldings): DilutionHolding => {
-      const kind: DilutionHolding['kind'] = holding.round === 1
-        ? 'initial'
-        : holdingIndex === allHoldings.length - 1
-          ? 'latest'
-          : holding.kind === 'latest'
-            ? 'prior'
-            : holding.kind
-      return { ...holding, kind }
-    })
-  }
-
-  return {
-    holdings,
-    totalShares,
-  }
-}
 
 function formatPercent(value: number) {
   if (value === 0) return '0%'
@@ -177,21 +121,21 @@ function formatPercent(value: number) {
 
 function formatFunding(value: number) {
   if (value === 0) return '—'
-  return `$${value.toFixed(value >= 10 ? 0 : 1).replace(/\.0$/, '')}M`
+  return compactDollars(value * 1_000_000)
 }
 
-function roundOneOwnership(snapshot: DilutionSnapshot) {
+function roundOneOwnership(snapshot: ReturnType<typeof buildDilutionSnapshot>) {
   const shares = snapshot.holdings.find((holding) => holding.round === 1)?.shares ?? 0
   return snapshot.totalShares > 0 ? (shares / snapshot.totalShares) * 100 : 0
 }
 
-function roundOneValue(snapshot: DilutionSnapshot, funding: number) {
+function roundOneValue(snapshot: ReturnType<typeof buildDilutionSnapshot>, funding: number) {
   if (funding === 0) return 0
   return (funding / 0.2) * (roundOneOwnership(snapshot) / 100)
 }
 
 export function DilutionSimulator() {
-  const [round, setRound] = useState(3)
+  const [round, setRound] = useState(1)
   const [followOn, setFollowOn] = useState(false)
   const snapshot = buildDilutionSnapshot(round, followOn)
   const noProRataSnapshot = buildDilutionSnapshot(round, false)
@@ -231,7 +175,7 @@ export function DilutionSimulator() {
           onClick={() => setFollowOn((value) => !value)}
           type="button"
         >
-          <span>pro rata</span>
+          <span>buy pro rata</span>
           <strong>{followOn ? 'on' : 'off'}</strong>
         </button>
       </div>
@@ -247,20 +191,18 @@ export function DilutionSimulator() {
                   key={holding.label}
                   style={{ width: `${percent}%` }}
                 >
-                  {holding.label.replace('Round ', 'R')} {formatPercent(percent)}
+                  <span>{holding.label.replace('Round ', 'R')}</span><strong>{formatPercent(percent)}</strong>
                 </span>
               )
             })}
           </div>
           <div className="dilution-model">
-            <h3>Model</h3>
             <ul className="deck-bullets">
-              <li>new shares = existing shares × ¼</li>
-              <li>50% survival rate</li>
-              <li>3× individual round sizes</li>
+              <li>Each round issues 20% of the company.</li>
+              <li>Each round raises 3× as much.</li>
             </ul>
           </div>
-          </div>
+        </div>
 
         <div className="dilution-stats">
           <div className="dilution-stat">
@@ -276,20 +218,21 @@ export function DilutionSimulator() {
           <div className="dilution-stat">
             <span>Total invested</span>
             <strong>{formatFunding(followOn ? proRataInvested : noProRataInvested)}</strong>
-            <small>{followOn ? 'pro rata' : 'no pro rata'} · Round 1 investor · through this round</small>
+            <small>Round 1 investor</small>
           </div>
           <div className="dilution-stat">
             <span>Equity percent</span>
             <strong>{formatPercent(roundOneOwnership(followOn ? proRataSnapshot : noProRataSnapshot))}</strong>
-            <small>{followOn ? 'pro rata' : 'no pro rata'} · Round 1 investor · after this round</small>
+            <small>Round 1 investor</small>
           </div>
           <div className="dilution-stat dilution-stat-emphasis">
             <span>Equity value</span>
             <strong>{formatFunding(roundOneValue(activeSnapshot, roundFunding))}</strong>
-            <small>{followOn ? 'pro rata' : 'no pro rata'} · current company value</small>
+            <small>paper value · Round 1 investor</small>
           </div>
         </div>
       </div>
+      <p className="dilution-qualification">Illustrative priced rounds · paper value, not cash returned</p>
     </div>
   )
 }
@@ -298,105 +241,6 @@ export function Coin({ outcome, index }: { outcome: 'H' | 'T' | '?'; index?: num
   return (
     <div className={`coin coin-${outcome.toLowerCase()}`} aria-label={outcome === '?' ? `Game ${index}` : outcome}>
       <span>{outcome === '?' ? index : outcome}</span>
-    </div>
-  )
-}
-
-export function CountdownTimer({ initialSeconds = 5 * 60 }: { initialSeconds?: number }) {
-  const [seconds, setSeconds] = useState(initialSeconds)
-  const [running, setRunning] = useState(false)
-
-  useEffect(() => {
-    if (!running || seconds <= 0) return
-    const timerId = window.setInterval(() => setSeconds((value) => Math.max(0, value - 1)), 1000)
-    return () => window.clearInterval(timerId)
-  }, [running, seconds])
-
-  useEffect(() => {
-    if (seconds === 0) setRunning(false)
-  }, [seconds])
-
-  const display = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`
-
-  return (
-    <div className={`timer ${seconds === 0 ? 'timer-ended' : ''}`} aria-label="Interview timer">
-      <output aria-live="polite">{display}</output>
-      <div className="timer-controls">
-        <button type="button" onClick={() => setRunning((value) => !value)}>
-          {running ? 'Pause' : seconds === initialSeconds ? 'Start' : 'Resume'}
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            setRunning(false)
-            setSeconds(initialSeconds)
-          }}
-        >
-          Reset
-        </button>
-      </div>
-    </div>
-  )
-}
-
-function readPositiveNumber(value: string) {
-  const number = Number(value)
-  return Number.isFinite(number) && number >= 0 ? number : 0
-}
-
-export function MarketSizingCalculator() {
-  const [customers, setCustomers] = useState('2500')
-  const [annualSpend, setAnnualSpend] = useState('10000')
-
-  const market = useMemo(
-    () => readPositiveNumber(customers) * readPositiveNumber(annualSpend),
-    [customers, annualSpend],
-  )
-
-  const formattedMarket = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 0,
-  }).format(market)
-
-  const marketStatus = market < 25_000_000
-    ? { className: 'market-below', label: 'below target' }
-    : market < 50_000_000
-      ? { className: 'market-near', label: 'near target' }
-      : { className: 'market-above', label: 'well above target' }
-
-  return (
-    <div className="market-sizing-calculator">
-      <label>
-        <span>customers</span>
-        <input
-          aria-label="Customers"
-          inputMode="numeric"
-          min="0"
-          onChange={(event) => setCustomers(event.target.value)}
-          placeholder="2,500"
-          type="number"
-          value={customers}
-        />
-      </label>
-      <span className="market-sizing-operator" aria-hidden="true">×</span>
-      <label>
-        <span>average annual contract</span>
-        <input
-          aria-label="Average annual contract value"
-          inputMode="decimal"
-          min="0"
-          onChange={(event) => setAnnualSpend(event.target.value)}
-          placeholder="$10,000"
-          type="number"
-          value={annualSpend}
-        />
-      </label>
-      <span className="market-sizing-operator" aria-hidden="true">=</span>
-      <div className={`market-sizing-result ${marketStatus.className}`}>
-        <span>annual market · {marketStatus.label}</span>
-        <output aria-label={`${formattedMarket}, ${marketStatus.label}`} aria-live="polite">{formattedMarket}</output>
-      </div>
     </div>
   )
 }

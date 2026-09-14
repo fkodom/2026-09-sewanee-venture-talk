@@ -12,22 +12,22 @@ export function PartThreeImplications() {
       >
         <SlideFrame dark>
           <div className="two-sides-slide">
-            <h2>Buy vs. Build</h2>
+            <h2>Buy vs. build</h2>
             <div className="two-sides-grid">
               <article>
                 <p>Investment</p>
                 <ul className="deck-bullets">
-                  <li>Meet founders and technical leaders</li>
-                  <li>Assess product, engineering, and risk</li>
-                  <li>Form a view with incomplete information</li>
+                  <li>Meet founders</li>
+                  <li>Assess product + execution risk</li>
+                  <li>Decide whether to invest</li>
                 </ul>
               </article>
               <article>
                 <p>Incubation</p>
                 <ul className="deck-bullets">
-                  <li>Start with an idea or market conviction</li>
-                  <li>Recruit, build, and find partner customers</li>
-                  <li>Support the first stage of a company</li>
+                  <li>Test an idea</li>
+                  <li>Recruit a team + build</li>
+                  <li>Find the first customers</li>
                 </ul>
               </article>
             </div>

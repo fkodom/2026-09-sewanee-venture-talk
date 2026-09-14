@@ -8,15 +8,15 @@ The complete narrative and research notes live in [`docs/venture-capital-talk-pl
 
 ## Status
 
-The complete narrative is implemented as 36 slides. The deck adds a title slide and speaker background, gives each coin game separate setup and distribution slides, adds builder-principles, pain, truth, and speed slides, and omits the plan's standalone power-law derivation. It also includes speaker notes, venture evidence, a live discovery exercise, a five-minute timer, and a five-slide early-stage valuation sequence.
+The deck has 32 active slides and a 33:00 rehearsal budget before questions and pauses. The startup-bet track and probabilities share one slide, followed by the Airbnb case study and “Build a wedge.” The ending moves through runway, ownership and investor conviction to the original two-line conclusion.
 
-- Content implementation is `36 / 36` for a 45–50 minute talk, followed by questions.
-- The opening and mathematical examples preserve the plan's stated caveats and indexing conventions.
-- All three coin games reuse locally bundled figures from [On Power Laws](https://fkodom.com/blog/on-power-laws).
-- The live discovery and market-sizing slides use local React state and work without a network connection.
-- The Josh Kopelman tweet is an official X embed and requires a network connection.
-- Research figures remain working estimates and must be refreshed, dated, and sourced shortly before the talk.
-- Rehearsal edits, current data, and any event-specific participant details remain presentation-preparation work.
+- Speaker notes contain transitions, sources, mathematical qualifications and interaction fallbacks.
+- The original coin-game compositions are retained. Game 3’s distribution is now a reproducible SVG survival plot using the same $2 minimum payout as its tree.
+- The stage-by-stage table connects Game 3 to venture financing: historical graduation rates alongside separate stage valuations. It uses Mattermark’s 2009 seed cohort observed in 2016 and Carta’s Q4 2024 median pre-money valuations.
+- “Dilution” is temporarily hidden, with its notes, simulator and styles preserved. Set `SHOW_DILUTION_SLIDE` to `true` in [`PartTwoEvidence.tsx`](src/slides/PartTwoEvidence.tsx) to restore it. The live interview, debrief and market calculator slides have been removed.
+- The S&P price series is the supplied August 2026 snapshot. Its exact YTD cutoff was not recorded, and Macrotrends blocked the September refresh attempt. It is not a live or newly verified reading.
+
+See [`docs/speaker-guide.md`](docs/speaker-guide.md) for the rehearsal clock, mathematical backup and source audit.
 
 ## Tech stack
 
@@ -28,7 +28,7 @@ The complete narrative is implemented as 36 slides. The deck adds a title slide 
 - [shadcn/ui](https://ui.shadcn.com/docs/installation/vite) when reusable interactive controls are needed; it is planned but not yet initialized
 - [Bun](https://bun.sh/) for dependency management and scripts
 
-React and TSX are deliberate choices. The deck calls for interactive charts, fragments, a live discovery timer, possible sliders, and tightly art-directed slide compositions. Markdown remains an option for simple appendix material, but it is not the primary authoring format.
+React and TSX are deliberate choices. The deck calls for interactive charts, fragments and tightly art-directed slide compositions. Markdown remains an option for simple appendix material, but it is not the primary authoring format.
 
 ## Getting started
 
@@ -51,6 +51,7 @@ Open the local URL printed by Vite. The page reloads as slide components or styl
 ```bash
 bun run dev       # start Vite in development mode
 bun run lint      # run Oxlint
+bun run check:math # check the financial models and timer arithmetic
 bun run build     # type-check and create the production build
 bun run preview   # serve the production build locally
 ```
@@ -98,16 +99,15 @@ Browser PDF output is a backup artifact, not a substitute for testing the live d
 
 ## Narrative
 
-The talk follows a six-part argument:
+The talk follows this argument:
 
 | Section | Purpose | Approx. time |
 | --- | --- | ---: |
-| The paradox | Compare the public-index alternative with the higher return hurdle venture must clear | 2–3 min |
-| Mathematical foundation | Compare additive, multiplicative, and elimination processes | 12–13 min |
-| Venture evidence | Show why venture outcomes resemble a power-law world | 9–10 min |
-| Background and implications | Connect the model to fund strategy and the speaker's experience | 8–9 min |
-| Startup discovery | Apply the framework to a possible real customer problem | 10–12 min |
-| Valuation and conclusion | Discuss incentives, then return to the human lesson | 4–5 min |
+| Introduction and paradox | Compare the public-index alternative with the higher return hurdle venture must clear | 3:30 |
+| Mathematical foundation | Compare additive, multiplicative, and elimination processes | 12:00 |
+| Venture evidence | Show why venture outcomes resemble a power-law world | 7:00 |
+| Investor/builder perspective and discovery | Connect the model to company building and the Airbnb example | 10:30 |
+| Valuation and conclusion | Discuss incentives, then return to the human lesson | 3:45 |
 
 The intended progression is:
 
@@ -128,31 +128,27 @@ A brief speaker background follows the title. The investor-and-builder framework
 9. Game 2: multiplicative.
 10. Log-normal distribution.
 11. Game 3: elimination.
-12. Pareto distribution (Power law).
+12. A power-law tail.
 13. Venture resembles Game 3.
-14. What's in a venture investment?
+14. What’s in a venture investment?
 15. Capital for equity.
 16. Advance or stop.
 17. A round buys time.
 18. A round buys information.
 19. The funding ladder.
 20. Power laws.
-21. Dilution.
-22. A round buys fuel.
-23. Buy vs. Build.
-24. So you want to build a startup?
-25. Seek pain.
-26. Past behavior beats promises.
-27. Seek truth.
-28. Move fast.
-29. Start narrow.
-30. The Mom Test.
-31. How much is an idea worth?
-32. Start with runway.
-33. The valuation floor.
-34. Will VCs believe it?
-35. Market size.
-36. Most startups fail. Most are still worthwhile.
+21. Buy vs. build.
+22. Where do you start?
+23. Who cares?
+24. A startup is a stack of bets.
+25. Case study: Airbnb.
+26. Build a wedge
+27. Why won't company X build that?
+28. How much is an idea worth?
+29. Start with runway.
+30. The valuation floor.
+31. Will VCs believe it?
+32. Most startups fail. Most are worthwhile.
 
 ## Design system
 
@@ -191,15 +187,22 @@ The implemented deck is organized by narrative section:
 ├── CLAUDE.md                       # Claude Code import of AGENTS.md
 ├── README.md                       # this project guide
 ├── docs/
-│   └── venture-capital-talk-plan.md
+│   ├── venture-capital-talk-plan.md
+│   └── speaker-guide.md
 ├── public/
 │   └── on-power-laws/             # locally bundled article figures used by the game slides
 ├── src/
 │   ├── components/deck/
 │   │   ├── SlideFrame.tsx         # shared frame and source line
-│   │   └── Visuals.tsx            # charts, coins, timer, and market-sizing calculator
+│   │   ├── Visuals.tsx            # charts, coins and dilution UI
+│   │   ├── CountdownTimer.tsx     # deadline-based live timer
+│   │   ├── MarketSizingCalculator.tsx
+│   │   └── PowerLawTailChart.tsx  # SVG survival plot
 │   ├── data/
-│   │   └── venture-data.ts        # shared figures, labels, and slide metadata
+│   │   ├── venture-data.ts        # shared observations and assumptions
+│   │   ├── venture-models.ts      # market and timer calculations
+│   │   ├── dilution-model.ts      # cap-table arithmetic
+│   │   └── power-law-simulation.ts
 │   ├── slides/
 │   │   ├── PartOneMath.tsx
 │   │   ├── PartTwoEvidence.tsx
@@ -304,7 +307,7 @@ The working source list includes:
 - CB Insights, State of Venture
 - Carta, State of Private Markets
 
-Before the event, every numeric claim should have a clearly identified source, cohort, and measurement window. Funding-stage graduation rates, valuations, market data, and portfolio statistics should be refreshed close to the presentation date.
+The dated source register and remaining S&P refresh limitation are in the speaker guide. Retain cohort dates and measurement windows when refreshing any figure; a recent observation is not interchangeable with an older cohort’s lifetime result.
 
 ## Quality checks
 

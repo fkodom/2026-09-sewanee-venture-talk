@@ -23,7 +23,11 @@ Use this priority order when instructions conflict:
 3. This file for implementation and design conventions.
 4. The current code for established implementation and visual conventions.
 
-The original seven-slide placeholder has been replaced by a full 36-slide implementation. The current deck adds a title slide and speaker background, splits each coin game into a setup and distribution slide, adds builder-principles, pain, truth, and speed slides, expands early-stage valuation into five slides, and omits the plan's standalone power-law derivation slide. Treat the current deck as the working presentation, while continuing to use the talk plan as the authority for narrative, facts, and caveats. Do not discard working slide compositions merely because the earlier placeholder was disposable.
+The original seven-slide placeholder has been replaced by a full 32-slide active presentation. The current deck adds a title slide and speaker background, splits each coin game into setup and distribution slides, expands discovery and early-stage valuation, retains deliberate progressive builds, and omits the plan’s standalone power-law derivation slide. The rehearsal schedule and source audit are in `docs/speaker-guide.md`. Treat the current deck as the working presentation, while continuing to use the talk plan as the authority for narrative, facts, and caveats. Do not discard working slide compositions merely because the earlier placeholder was disposable.
+
+The September 7 correction restores the funding-stage table and intentional progressive builds. Preserve the combined startup-bet track and probability slide. The user removed the financing-stage overlay on September 9, then removed the separate plain startup-bet slide on September 11 while retaining its title for the probability slide. On September 11, the user also consolidated the two interview-question slides into one slide with a revealed *The Mom Test* title-and-author callout and removed “Move fast & update priors.” The user explicitly removed “A good business needn’t be a venture business,” the live “The Mom Test” slide, “What did we learn?” and “Market size.” The user also removed “The seed-to-A bottleneck” on September 9; retain the funding-stage table. “Dilution” is temporarily hidden with `SHOW_DILUTION_SLIDE = false` in `src/slides/PartTwoEvidence.tsx`; preserve its full slide, notes, simulator and styling for restoration. Keep “Who cares?” before the startup-bet slide, and keep “Build a wedge” immediately after the Airbnb case study. The incumbent slide is titled “Why won't company X build that?” and covers only Google LaMDA and OpenAI ChatGPT.
+
+On September 13, the user removed the remaining “What's the pain?” slide, including its *The Mom Test* reveal. Go directly from the startup-bet slide to the Airbnb case study.
 
 Do not alter the central argument, numerical examples, qualifications, or conclusion merely to simplify implementation. If a factual or narrative change appears necessary, call it out explicitly.
 
@@ -125,7 +129,7 @@ import RevealNotes from 'reveal.js/plugin/notes'
 
 `Slide`'s `notes` prop stores speaker notes, and the registered notes plugin enables the `S` speaker view. Preserve both when editing the presentation.
 
-Keep designed slides in TSX. Raw reveal Markdown does not provide enough control for the typography, equations, charts, fragments, and live exercise in this talk. Markdown is acceptable for appendices or speaker-note-heavy backup material.
+Keep designed slides in TSX. Use `div`, `article`, or `role="group"` for internal layout groups: nested HTML `section` elements can be mistaken for vertical slides by Reveal. Raw reveal Markdown does not provide enough control for the typography, equations, charts and fragments in this talk. Markdown is acceptable for appendices or speaker-note-heavy backup material.
 
 Use `Slide` and `Fragment` from `@revealjs/react` instead of manually initializing reveal.js or mutating its DOM. Keep transitions restrained; `fade` and `fade-up` are the defaults. A fragment should reveal an idea in the order it is spoken, not decorate the slide.
 
@@ -194,7 +198,7 @@ The talk follows this arc:
 
 > Paradox → mathematical model → empirical evidence → investor implications → company discovery → valuation → human conclusion
 
-The talk plan defines 33 narrative beats. The current implementation adds a title slide and speaker background, expands the three games into separate setup and result slides, adds builder-principles, pain, truth, and speed slides, and omits the standalone derivation, producing this 36-slide sequence:
+The talk plan defines 33 narrative beats. The current implementation has 32 active slides, including deliberate builds, plus a preserved but hidden dilution slide. It omits the standalone derivation, seed bottleneck, financing-fit bridge, interview prompts and book reveal, learning-loop callback, live exercise, debrief and market calculator:
 
 1. The Math of Venture Capital.
 2. My background.
@@ -207,44 +211,39 @@ The talk plan defines 33 narrative beats. The current implementation adds a titl
 9. Game 2: multiplicative.
 10. Log-normal distribution.
 11. Game 3: elimination.
-12. Pareto distribution (Power law).
+12. A power-law tail.
 13. Venture resembles Game 3.
-14. What's in a venture investment?
+14. What’s in a venture investment?
 15. Capital for equity.
 16. Advance or stop.
 17. A round buys time.
 18. A round buys information.
 19. The funding ladder.
 20. Power laws.
-21. Dilution.
-22. A round buys fuel.
-23. Buy vs. Build.
-24. So you want to build a startup?
-25. Seek pain.
-26. Past behavior beats promises.
-27. Seek truth.
-28. Move fast.
-29. Start narrow.
-30. The Mom Test.
-31. How much is an idea worth?
-32. Start with runway.
-33. The valuation floor.
-34. Will VCs believe it?
-35. Market size.
-36. Most startups fail. Most are still worthwhile.
+21. Buy vs. build.
+22. Where do you start?
+23. Who cares?
+24. A startup is a stack of bets.
+25. Case study: Airbnb.
+26. Build a wedge
+27. Why won't company X build that?
+28. How much is an idea worth?
+29. Start with runway.
+30. The valuation floor.
+31. Will VCs believe it?
+32. Most startups fail. Most are worthwhile.
 
-After the brief background slide, keep slides 3–22 centered on the paradox, model, and evidence. The investor-and-builder framework begins only after the mathematics has earned the audience's attention. The live discovery segment is a real exercise with a prepared participant, visible questions, a five-minute timer, and a rescue example. It must be allowed to conclude that the idea is not a good startup opportunity.
+After the brief background slide, keep slides 3–20 centered on the paradox, model, and evidence. The investor-and-builder framework begins only after the mathematics has earned the audience's attention. Customer discovery is taught through the startup claims and Airbnb examples. There is no live exercise in the current deck.
 
 Approximate timing:
 
 | Section | Time |
 | --- | ---: |
-| Paradox | 2–3 min |
-| Mathematical foundation | 12–13 min |
-| Venture evidence | 9–10 min |
-| Background and implications | 8–9 min |
-| Startup discovery exercise | 10–12 min |
-| Valuation and conclusion | 4–5 min |
+| Introduction and paradox | 3:30 |
+| Mathematical foundation | 12:00 |
+| Venture evidence | 7:00 |
+| Investor/builder perspective and discovery | 6:45 |
+| Valuation and conclusion | 3:45 |
 
 ## Mathematical and factual integrity
 
@@ -262,11 +261,11 @@ This talk depends on careful distinctions. Preserve them in on-slide copy, speak
 - Game 1 is a sum of 100 fair `+$1 / +$0` flips and has expected value $50. Its original tree and simulation figures are bundled from [On Power Laws](https://fkodom.com/blog/on-power-laws).
 - Game 2 must use multipliers of `1.1` and `0.9`. Its one-step expected multiplier is one, while a 50/50 path ends at `0.99^50 ≈ 0.61`.
 - Do not replace Game 2 with double-or-halve. That game has expected multiplier `1.25` and defeats the intended comparison.
-- All three games use locally bundled figures from Frank Odom's [On Power Laws](https://fkodom.com/blog/on-power-laws).
+- The trees and Games 1–2 distributions use locally bundled figures from Frank Odom’s [On Power Laws](https://fkodom.com/blog/on-power-laws). Game 3 uses a deterministic local SVG survival plot, matching the tree’s double-before-flip convention: immediate tails pays $2. The old Game 3 distribution image uses a different starting payout and must not be restored without reconciling it.
 
 ### St. Petersburg game and power law
 
-State the payout/indexing convention carefully. The first tails terminates the game; successive heads double the payout. Use the survival function `P(X ≥ x)` for the power law because payouts are discrete powers of two. Do not imply that real markets offer infinite wealth or that an investor should pay an infinite entry price.
+State the payout/indexing convention carefully. Start at $1; double before each flip. Heads continues and tails collects and stops. Immediate tails pays $2. With first tails on flip n≥1, P(X=2^n)=2^(−n) and P(X≥2^n)=2^(1−n). Use the survival function `P(X ≥ x)` for the power law because payouts are discrete powers of two. Do not imply that real markets offer infinite wealth or that an investor should pay an infinite entry price.
 
 The general derivation is:
 
@@ -291,11 +290,11 @@ Keep the derivation in the plan and speaker preparation. Do not restore it as a 
 
 ### Valuation
 
-The `$500k ÷ 20% = $2.5M` post-money valuation is an illustrative financing constraint. The $500,000 round, 20% dilution, and $2.5 million valuation are linked assumptions, not current market benchmarks or universal terms. The $25 million annual-market example is also illustrative rather than a universal venture threshold.
+The `$500k ÷ 20% = $2.5M` post-money valuation is an illustrative financing constraint. The $500,000 round, 20% dilution, and $2.5 million valuation are linked assumptions, not current market benchmarks or universal terms. “Will VCs believe it?” uses a three-point line with only “big enough market,” “you can build it,” and “$500k” as its labels, per the September 13 edit. It sets no fixed market-size threshold; keep the round's illustrative nature and the conditional investment decision in speaker notes.
 
 ### Source hygiene
 
-Numeric claims that can change must include a source, cohort, and measurement period in speaker notes or a visible source line. Central references are listed at the end of the talk plan. Refresh funding-stage valuations, graduation rates, and market statistics shortly before the event; do not silently present old working figures as current.
+Numeric claims that can change must include a source, cohort, and measurement period in speaker notes or a visible source line. Central references are listed at the end of the talk plan. The funding table uses Mattermark’s 2009 seed cohort observed in 2016, with conditional graduation rates derived from adjacent cumulative percentages, alongside separate Carta Q4 2024 median pre-money valuations (primary and bridge rounds combined). Its source data is in `src/data/funding-ladder.ts`. Do not substitute cumulative probabilities for conditional rates or describe ratios of stage medians as realized company growth. There is no verified pre-seed graduation observation in this dataset. The September pass corrected Horsley Bridge to approximately 4.5% of invested dollars generating 60% of returns (Chris Dixon, June 2015). Refresh market statistics where possible; do not silently present historical observations as current. The S&P series is a supplied August 2026 snapshot with no exact recorded cutoff; its automated September refresh was blocked.
 
 When revising a number:
 
@@ -310,7 +309,7 @@ When revising a number:
 - All interactive elements need keyboard access and a visible focus state.
 - Avoid hover-only explanations; the deck is presented on a projector and may use a clicker.
 - Do not put essential information in fragments that are absent from PDF export without checking the exported result.
-- The live exercise timer and any sliders/charts should degrade gracefully. The presenter must be able to continue if interaction fails.
+- Interactive charts should degrade gracefully. The presenter must be able to continue if interaction fails.
 - Keep application state local unless persistence is explicitly required. This is a static presentation, not a server-rendered app.
 - Do not add Next.js, a backend, routing framework, or global state library without a concrete requirement.
 
