@@ -84,6 +84,24 @@ bun run preview
 
 The reference canvas is 1440 × 810 (16:9). reveal.js scales it to the available screen.
 
+### Single-file upload to Cloudflare Drop
+
+Build and package the presentation:
+
+```bash
+bun run package:site
+```
+
+This creates `artifacts/the-math-of-venture-capital.zip`, containing the production HTML, JavaScript, CSS and local images. `index.html` is at the ZIP root. The packaging command uses the system `zip` and `unzip` utilities and rebuilds the deck each time.
+
+Upload that ZIP at [Cloudflare Drop](https://www.cloudflare.com/drop/) to receive a public URL. Claim the deployment within 60 minutes to keep it, as described on Cloudflare's upload page. The ZIP can also be used with [Cloudflare Pages Direct Upload](https://developers.cloudflare.com/pages/get-started/direct-upload/).
+
+Share the root URL to begin at the title slide. The existing `#/…` slide links and `S` speaker view work from the hosted site. Re-run the packaging command after deck changes and upload the new ZIP.
+
+The same ZIP or `dist/` contents can also be hosted in a website subdirectory such as `/talks/math-of-vc/`. Asset paths are relative, including the coin-game figures. Place `index.html` and its accompanying files directly in that directory, and configure the host to redirect `/talks/math-of-vc` to `/talks/math-of-vc/` before its main-site fallback. The trailing slash is required so the browser resolves assets inside the presentation directory. Slide links then look like `/talks/math-of-vc/#/1`.
+
+The public presentation is hosted at [fkodom.com/talks/math-of-vc/](https://fkodom.com/talks/math-of-vc/). From the `personal-webpage` repository, run `bun run talks:import math-of-vc ../sewanee-venture-talk-2026-09/sewanee-venture-talk` to rebuild and copy this deck, then `bun run talks:deploy` to publish the imported talks. The presentation source stays in this repository.
+
 ### PDF export
 
 For a printable handout or backup copy:

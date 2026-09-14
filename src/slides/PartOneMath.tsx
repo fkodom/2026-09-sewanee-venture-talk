@@ -159,7 +159,7 @@ export function PartOneMath() {
             </div>
             <figure className="article-visual-panel article-visual-panel-tree article-visual-panel-branching">
               <img
-                src="/on-power-laws/game1_tree.png"
+                src={`${import.meta.env.BASE_URL}on-power-laws/game1_tree.png`}
                 alt="A decision tree where heads adds one dollar and tails adds zero dollars"
               />
             </figure>
@@ -178,7 +178,7 @@ export function PartOneMath() {
             <div className="distribution-asset-layout">
               <figure className="distribution-asset">
                 <img
-                  src="/on-power-laws/game1_additive.png"
+                  src={`${import.meta.env.BASE_URL}on-power-laws/game1_additive.png`}
                   alt="A 10,000-trial simulation and theoretical normal distribution centered on a 50 dollar payout"
                 />
               </figure>
@@ -204,7 +204,7 @@ export function PartOneMath() {
             </div>
             <figure className="article-visual-panel article-visual-panel-tree article-visual-panel-branching">
               <img
-                src="/on-power-laws/game2_tree.png"
+                src={`${import.meta.env.BASE_URL}on-power-laws/game2_tree.png`}
                 alt="A decision tree for repeated 1.1 and 0.9 multipliers, beginning at one dollar"
               />
             </figure>
@@ -223,7 +223,7 @@ export function PartOneMath() {
             <div className="distribution-asset-layout">
               <figure className="distribution-asset">
                 <img
-                  src="/on-power-laws/game2_multiplicative.png"
+                  src={`${import.meta.env.BASE_URL}on-power-laws/game2_multiplicative.png`}
                   alt="A 10,000-trial simulation and theoretical log-normal distribution with median 61 cents and mean one dollar"
                 />
               </figure>
@@ -249,7 +249,7 @@ export function PartOneMath() {
             </div>
             <figure className="article-visual-panel article-visual-panel-tree article-visual-panel-elimination">
               <img
-                src="/on-power-laws/game3_tree.png"
+                src={`${import.meta.env.BASE_URL}on-power-laws/game3_tree.png`}
                 alt="A decision tree where the payout doubles each round, heads continues, and tails ends the game"
               />
             </figure>

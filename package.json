@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "package:site": "bun run build && bun scripts/package-site.ts",
     "lint": "oxlint",
     "check:math": "bun scripts/check-models.ts",
     "preview": "vite preview"
